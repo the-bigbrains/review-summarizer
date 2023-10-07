@@ -1,14 +1,12 @@
 import { positive } from "./positive";
 import { negative } from "./negative";
-
-const puppeteer = require("puppeteer");
+import puppeteer from "puppeteer";
 
 export default async function run(url: string) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url); // go to url
   const html = await page.content();
-
   // Use page.evaluate() to find the <a> tag with the specific data-hook attribute
   const linkSelector = 'a[data-hook="see-all-reviews-link-foot"]';
   const link = await page.evaluate((selector: any) => {
@@ -25,8 +23,6 @@ export default async function run(url: string) {
 
   const review_positive: { text: string }[] = await positive(page); //Head over to top positive review page
   const review_negative: { text: string }[] = await negative(page); //Head over to top negative review page
-  console.log("Negative Reviews: ", review_negative);
-  console.log("Positive Reviews: ", review_positive);
 
   await browser.close(); // close browser
 

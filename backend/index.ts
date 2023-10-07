@@ -1,6 +1,9 @@
 import express from "express";
 import run from "./webscraping/web";
 import cors from "cors";
+import gptN from "../extension/util/gptNegative";
+import gptP from "../extension/util/gptPositive";
+import gpt from "../extension/util/gpt";
 
 const app = express();
 const port = 3000;
@@ -25,7 +28,18 @@ app.get("/", async (req, res) => {
 
   console.log(response);
 
-  res.status(200).send(response);
+  // ! send it to GPT pos
+  const posGPT = await gptP(response.positive.map(review=>review.text));
+
+  // ! send to GPT negative
+  const negGPT = await gptN(response.negative.map(review=>review.text));
+
+  const positive = posGPT.map(pos => pos.message.content) as string[];
+  const negative = negGPT.map(neg => neg.message.content) as string[];
+
+  // ! return the final
+
+  res.status(200).send({positive, negative});
 });
 
 app.listen(port, () => {

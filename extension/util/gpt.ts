@@ -4,7 +4,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export default async function gpt(pos: JSON, neg: JSON) {
+export default async function gpt(pos: string[], neg: string[]) {
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -16,8 +16,8 @@ export default async function gpt(pos: JSON, neg: JSON) {
         Inject a touch of wit to maintain a light-hearted tone throughout.
         Return a summary in the following JSON format and ONLY the JSON format in your response, (Do not response with emoji):
         {
-            pros_summary: string[]
-            cons_summary:string[]
+            pros: string[]
+            cons:string[]
         }:
         ${pos}
         ${neg}`,

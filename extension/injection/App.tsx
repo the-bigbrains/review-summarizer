@@ -20,6 +20,8 @@ function App() {
 
       const reviews: Reviews = await sendRequest(getURL());
 
+      console.log(reviews);
+
       setReviewArray(reviews);
     };
 
@@ -28,8 +30,8 @@ function App() {
 
   return (
     <div>
-      <pre>{JSON.stringify(reviewArray, null, 2)}</pre>;
-      <div className="w-5 h-5 bg-blue-600"> that's right</div>
+      <pre>{JSON.stringify(reviewArray, null, 2)}</pre>
+      <div className="w-fit h-fit bg-blue-600"> that's right</div>
     </div>
   );
 }
