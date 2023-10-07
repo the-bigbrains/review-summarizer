@@ -23,6 +23,6 @@
     "../backend/webscraping",
     "util/content.ts",
     "util/fetchURL.ts",
-    "util/gpt.ts"
+    "util/gptPositive.ts"
   ]
 }
