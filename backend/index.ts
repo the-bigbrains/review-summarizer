@@ -1,5 +1,5 @@
 import express from "express";
-import run from "./web";
+import run from "./webscraping/web";
 
 const app = express();
 const port = 3000;
