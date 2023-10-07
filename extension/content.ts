@@ -1,9 +1,8 @@
 const init = function () {
   const elem = document.createElement("div");
-  elem.className = "text-red-500 bg-white w-24 h-24";
-  elem.innerHTML = "this is a typescript!";
-  const section = document.getElementById("titleSection");
+  elem.className = "ReviewRuneTitle";
+  elem.innerHTML = "Review Rune:";
+  const section = document.getElementById("ask-btf_feature_div");
   section?.appendChild(elem);
-  document.body.appendChild(elem);
 };
 init();

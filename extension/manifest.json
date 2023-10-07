@@ -12,6 +12,9 @@
             ],
             "js": [
                 "./js/content.js"
+            ],
+            "css": [
+                "./js/App.css"
             ]
         }
     ],
