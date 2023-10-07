@@ -42,10 +42,8 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-parchment p-3">
-      <h1 className="text-black text-4xl font-bold m-2 border-b-2 border-black">
-        Review Rune
-      </h1>
+    <div className= "bg-gradient-to-tr from-gray-700 via-gray-900 to-black w-96 h-96 flex flex-col items-center justify-center text-blue-200">
+      <h1 className="text-4xl font-bold m-2 border-b-2 border-black">Review Rune</h1>
       <div className="flex flex-row items-center justify-start px-5">
         <div className="w-1/2 flex-col">
           <h1>Pros:</h1>
