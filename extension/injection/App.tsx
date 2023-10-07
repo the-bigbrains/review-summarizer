@@ -3,8 +3,8 @@ import getURL from "../util/getURL";
 import "../src/App.css";
 
 interface Reviews {
-  negative: { text: string }[];
-  positive: { text: string }[];
+  negative: string[];
+  positive: string[];
 }
 
 function App() {
@@ -18,19 +18,31 @@ function App() {
         return res;
       };
 
-      const reviews: Reviews = await sendRequest(getURL());
+      // const reviews: Reviews = await sendRequest(getURL());
 
-      console.log(reviews);
+      // console.log("stuff" + " " + reviews);
 
-      setReviewArray(reviews);
+      // setReviewArray(reviews);
     };
 
     test();
   }, []);
 
   return (
-    <div>
-      <pre>{JSON.stringify(reviewArray, null, 2)}</pre>
+    <div className= "bg-parchment p-3">
+      <h1 className="text-black text-4xl font-bold m-2 border-b-2 border-black">Review Rune</h1>
+      <div className="flex flex-row items-center justify-start px-5">
+        <div className="w-1/2 flex-col">
+            <h1>Pros:</h1>
+            <ul>
+              <li>Pro one</li>
+              <li>Pro Two</li>
+            </ul>
+        </div>
+        <div className="w-1/2">
+            <h1>Cons:</h1>
+        </div>
+      </div>
     </div>
   );
 }
