@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import getURL from "../util/getURL";
 import "../src/App.css";
 
 interface Reviews {
-  negative: { text: string }[];
-  positive: { text: string }[];
+  negative: string[];
+  positive: string[];
 }
 
 function App() {
@@ -18,19 +17,45 @@ function App() {
         return res;
       };
 
-      const reviews: Reviews = await sendRequest(getURL());
+      const reviews: Reviews = await sendRequest(window.location.href);
 
-      console.log(reviews);
+      const positiveArray =
+        typeof reviews.positive[0] === "string"
+          ? JSON.parse(reviews.positive[0].split(/\n/g).join(""))
+          : reviews.positive;
+      const negativeArray =
+        typeof reviews.negative[0] === "string"
+          ? JSON.parse(reviews.negative[0].split(/\n/g).join(""))
+          : reviews.negative;
 
-      setReviewArray(reviews);
+      const newReviewArray = {
+        positive: positiveArray,
+        negative: negativeArray,
+      };
+
+      console.log("sanitized:", newReviewArray);
+
+      setReviewArray(newReviewArray as any);
     };
 
     test();
   }, []);
 
   return (
-    <div>
-      <pre>{JSON.stringify(reviewArray, null, 2)}</pre>
+    <div className= "bg-gradient-to-tr from-gray-700 via-gray-900 to-black w-96 h-96 flex flex-col items-center justify-center text-blue-200">
+      <h1 className="text-4xl font-bold m-2 border-b-2 border-black">Review Rune</h1>
+      <div className="flex flex-row items-center justify-start px-5">
+        <div className="w-1/2 flex-col">
+          <h1>Pros:</h1>
+          <ul>
+            <li>Pro one</li>
+            <li>Pro Two</li>
+          </ul>
+        </div>
+        <div className="w-1/2">
+          <h1>Cons:</h1>
+        </div>
+      </div>
     </div>
   );
 }
