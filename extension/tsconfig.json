@@ -16,14 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "outDir": "./dist" /* Specify an output folder for all emitted files. */
-  },
-  "include": [
-    "src",
-    "./**.ts",
-    "../backend/webscraping",
-    "util/content.ts",
-    "util/getURL.ts",
-    "util/gptNegative.ts",
-    "injection/content.tsx"
-  ]
+  }
 }

@@ -1,8 +1,4 @@
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import openai from "./client";
 
 export default async function gpt(pos: string[], neg: string[]) {
   const completion = await openai.chat.completions.create({
