@@ -4,7 +4,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export default async function gpt(test: string[]) {
+export default async function gpt(review: string) {
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -21,7 +21,7 @@ export default async function gpt(test: string[]) {
   noteworthy: string[]
 }
 
-${test}
+${review}
 `,
       },
     ],
