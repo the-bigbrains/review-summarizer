@@ -5,8 +5,12 @@
     "description": "This is a description",
     "content_scripts": [
         {
-            "matches": ["https://*.google.com/*"],
-            "js": ["content.ts"]
+            "matches": [
+                "https://*.google.com/*"
+            ],
+            "js": [
+                "./js/content.js"
+            ]
         }
     ],
     "action": {

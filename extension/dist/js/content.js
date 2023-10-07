@@ -1,0 +1,1 @@
+(()=>{"use strict";var e;(e=document.createElement("div")).className="text-red-500 bg-red-500 w-24 h-24",e.innerHTML="this is a typescript",document.body.appendChild(e)})();

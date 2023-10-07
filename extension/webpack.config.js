@@ -4,13 +4,25 @@ const CopyPlugin = require("copy-webpack-plugin")
 
 module.exports = {
     entry: {
-        index: "./src/index.tsx"
+        index: "./src/index.tsx",
+        content: "./content.ts"
     },
     mode: "production",
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
+                use: [
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            compilerOptions: { noEmit: false },
+                        }
+                    }],
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.ts?$/,
                 use: [
                     {
                         loader: "ts-loader",
