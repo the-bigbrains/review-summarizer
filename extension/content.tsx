@@ -1,4 +1,5 @@
-import getURL from "./util/getURL";
+import React from "react";
+import ReactDOM from "react-dom/client";
 /*
 ! url -> call scraper -> feed scraper data into gpt -> output gets displayed here in content.ts
 */
@@ -21,18 +22,21 @@ const init = async () => {
 
     const yeet = await fetch(`http://localhost:3000/?productUrl=${url}`);
     const res = await yeet.json();
-    console.log(res);
+    return res;
   };
 
   console.log("init");
 
-  console.log(await sendRequest(url));
+  // const reviews = await sendRequest(url);
   const elem = document.createElement("div");
-  elem.className = "ReviewRuneTitle";
+  // elem.className = "ReviewRuneTitle";
+  elem.className = "container";
   // const stuff = await scrape();
   // console.log(stuff);
-  elem.innerHTML = "Review Rune: ";
+  // elem.innerHTML = "Review Rune: ";
   const section = document.getElementById("ask-btf_feature_div");
   section?.appendChild(elem);
+  const rootDiv = ReactDOM.createRoot(elem);
+  rootDiv.render(<div>Hello world</div>);
 };
 init();
