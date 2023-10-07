@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import getURL from "../util/getURL";
+import "../src/App.css";
 
 interface Reviews {
   negative: { text: string }[];
@@ -25,7 +26,12 @@ function App() {
     test();
   }, []);
 
-  return <pre>{JSON.stringify(reviewArray, null, 2)}</pre>;
+  return (
+    <div>
+      <pre>{JSON.stringify(reviewArray, null, 2)}</pre>;
+      <div className="w-5 h-5 bg-blue-600"> that's right</div>
+    </div>
+  );
 }
 
 export default App;
