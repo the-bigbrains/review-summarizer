@@ -1,7 +1,7 @@
-import fetchURL from "./fetchURL";
+import fetchURL from "./util/fetchURL";
 /*
 
- ! url -> call scraper -> feed scraper data into gpt -> output gets displayed here in content.ts
+! url -> call scraper -> feed scraper data into gpt -> output gets displayed here in content.ts
 
 */
 const init = function () {

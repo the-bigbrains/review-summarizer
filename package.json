@@ -11,5 +11,8 @@
   "workspaces": [
     "extension",
     "backend"
-  ]
+  ],
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
 }

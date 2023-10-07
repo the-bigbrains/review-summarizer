@@ -5,6 +5,8 @@ const CopyPlugin = require("copy-webpack-plugin")
 module.exports = {
     entry: {
         index: "./src/index.tsx",
+        content: "./content.ts",
+        util: "./util/"
     },
     mode: "production",
     module: {
@@ -56,7 +58,7 @@ module.exports = {
         extensions: [".tsx", ".ts", ".js"],
     },
     output: {
-        path: path.join(__dirname, "dist/js"),
+        path: path.resolve(__dirname, "dist/js"),
         filename: "[name].js",
     },
 };
