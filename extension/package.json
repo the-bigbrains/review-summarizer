@@ -13,6 +13,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "html-webpack-plugin": "^5.5.0",
     "openai": "^4.11.1",
+    "puppeteer": "^21.3.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
