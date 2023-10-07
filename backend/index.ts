@@ -1,9 +1,9 @@
 import express from "express";
 import run from "./webscraping/web";
 import cors from "cors";
-import gptN from "../extension/util/gptNegative";
-import gptP from "../extension/util/gptPositive";
-import gpt from "../extension/util/gpt";
+import gptN from "./gpt/gptNegative";
+import gptP from "./gpt/gptPositive";
+import gpt from "./gpt/gpt";
 
 const app = express();
 const port = 3000;
