@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -22,7 +22,7 @@
     "./**.ts",
     "../backend/webscraping",
     "util/content.ts",
-    "util/fetchURL.ts",
+    "util/getURL.ts",
     "util/gptPositive.ts"
   ]
 }
