@@ -23,8 +23,8 @@ export default async function run(url: string) {
     console.log("Link not found on the page.");
   }
 
-  const review_positive = await positive(page); //Head over to top positive review page
-  const review_negative = await negative(page); //Head over to top negative review page
+  const review_positive: { text: string } = await positive(page); //Head over to top positive review page
+  const review_negative: { text: string } = await negative(page); //Head over to top negative review page
   console.log("Negative Reviews: ", review_negative);
   console.log("Positive Reviews: ", review_positive);
 
