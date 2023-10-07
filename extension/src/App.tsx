@@ -1,3 +1,4 @@
+import { doc } from "prettier";
 import "./App.css";
 
 function App() {
@@ -8,24 +9,46 @@ function App() {
     console.log("sending url", url);
 
     const yeet = await fetch(`http://localhost:3000/?productUrl=${url}`);
+    console.log(yeet);
+  };
+
+  const setCookie = () => {
+    const key = (document.getElementById("api-key") as HTMLInputElement).value;
+    if (key) {
+      document.cookie = `key=${key}`;
+    }
+    console.log(document.cookie);
   };
 
   return (
     <div className="bg-slate-800 w-96 h-96 flex flex-col items-center justify-center text-white">
       <div className="text-2xl">Review Rune</div>
       <div>
-        <h1 className="text-xl">Please Enter your OpenAI API Key:</h1>
+        <h1 className="text-xl mb-3">Please Enter your OpenAI API Key:</h1>
         <div className="flex-row">
-          <input
-            className="text-lg text-black text-center"
-            type="text"
-            placeholder="Enter API Key here..."
-          ></input>
-          <button className="bg-white text-black rounded-md px-1 mx-1 text-lg hover:bg-green-500 hover:text-white">
-            Submit
-          </button>
+          <form>
+            <input
+              className="text-lg text-black text-center rounded-md mr-1"
+              type="text"
+              placeholder="Enter API Key here..."
+              id="api-key"
+            />
+            <button
+              className="bg-white text-black rounded-md px-1 mx-1 text-lg hover:bg-green-500 hover:text-white"
+              onClick={() => {
+                setCookie();
+              }}>
+              Submit
+            </button>
+          </form>
         </div>
-        <button onClick={() => sendRequest(url)}>Yeet</button>
+        <button
+          className="mt-2 text-sm"
+          onClick={() => {
+            sendRequest(url);
+          }}>
+          Generate reviews
+        </button>
       </div>
     </div>
   );
