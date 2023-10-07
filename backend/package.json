@@ -1,11 +1,13 @@
 {
-  "name": "scraper",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --build",
+    "build": "npm install && tsc --build",
+    "watch": "tsc --watch",
     "start": "node ./dist/index.js",
+    "dev": "nodemon ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,5 +15,9 @@
   "dependencies": {
     "express": "^4.18.2",
     "puppeteer": "^21.3.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "tsc": "^2.0.4"
   }
 }

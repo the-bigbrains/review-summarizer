@@ -10,6 +10,6 @@
   "license": "ISC",
   "workspaces": [
     "extension",
-    "scraper"
+    "backend"
   ]
 }
