@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.0.10",
     "copy-webpack-plugin": "^11.0.0",
     "html-webpack-plugin": "^5.5.0",
+    "openai": "^4.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
