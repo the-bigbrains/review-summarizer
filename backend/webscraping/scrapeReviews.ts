@@ -2,7 +2,7 @@ import { positive } from "./positive";
 import { negative } from "./negative";
 import puppeteer from "puppeteer";
 
-export default async function run(url: string) {
+export default async function scrapeReviews(url: string) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url); // go to url
@@ -25,6 +25,7 @@ export default async function run(url: string) {
   const review_negative: { text: string }[] = await negative(page); //Head over to top negative review page
 
   await browser.close(); // close browser
+  console.log("browser closed");
 
   return {
     positive: review_positive,

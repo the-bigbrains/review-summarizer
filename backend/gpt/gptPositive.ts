@@ -1,8 +1,4 @@
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import openai from "./client";
 
 export default async function gptP(review: string[]) {
   const completion = await openai.chat.completions.create({
@@ -15,10 +11,11 @@ export default async function gptP(review: string[]) {
         return a summary in the following JSON format and ONLY the JSON format in your response:
 
         {
-          pro_reference: string[] //1 to 1 matching phrases the summarized cons are inferred from 
+          pros: string[],
           noteworthy: string[]
-        }:  
-        ${review}`,
+        }  
+
+        Review: ${review}`,
       },
     ],
     model: "gpt-3.5-turbo",
