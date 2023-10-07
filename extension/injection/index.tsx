@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import App from "./App";
 /*
 ! url -> call scraper -> feed scraper data into gpt -> output gets displayed here in content.ts
 */
@@ -31,12 +32,10 @@ const init = async () => {
   const elem = document.createElement("div");
   // elem.className = "ReviewRuneTitle";
   elem.className = "container";
-  // const stuff = await scrape();
-  // console.log(stuff);
-  // elem.innerHTML = "Review Rune: ";
   const section = document.getElementById("ask-btf_feature_div");
   section?.appendChild(elem);
   const rootDiv = ReactDOM.createRoot(elem);
-  rootDiv.render(<div>Hello world</div>);
+
+  rootDiv.render(<App />);
 };
 init();

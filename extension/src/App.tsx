@@ -1,4 +1,3 @@
-import { doc } from "prettier";
 import "./App.css";
 
 function App() {
@@ -37,7 +36,8 @@ function App() {
               className="bg-white text-black rounded-md px-1 mx-1 text-lg hover:bg-green-500 hover:text-white"
               onClick={() => {
                 setCookie();
-              }}>
+              }}
+            >
               Submit
             </button>
           </form>
@@ -46,7 +46,8 @@ function App() {
           className="mt-2 text-sm"
           onClick={() => {
             sendRequest(url);
-          }}>
+          }}
+        >
           Generate reviews
         </button>
       </div>

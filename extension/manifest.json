@@ -9,7 +9,7 @@
                 "https://*.amazon.com/*"
             ],
             "js": [
-                "./js/content.js"
+                "./js/inject.js"
             ],
             "css": [
                 "./js/App.css"
