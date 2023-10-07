@@ -1,1 +1,1 @@
-(()=>{"use strict";var e;(e=document.createElement("div")).className="text-red-500 bg-red-500 w-24 h-24",e.innerHTML="this is a typescript",document.body.appendChild(e)})();
+(()=>{"use strict";!function(){var e=document.createElement("div");e.className="text-red-500 bg-white w-24 h-24",e.innerHTML="this is a typescript!";var t=document.getElementById("titleSection");null==t||t.appendChild(e),document.body.appendChild(e)}()})();
