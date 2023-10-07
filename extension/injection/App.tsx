@@ -42,18 +42,24 @@ function App() {
   }, []);
 
   return (
-    <div className= "bg-gradient-to-tr from-gray-700 via-gray-900 to-black w-96 h-96 flex flex-col items-center justify-center text-blue-200">
-      <h1 className="text-4xl font-bold m-2 border-b-2 border-black">Review Rune</h1>
-      <div className="flex flex-row items-center justify-start px-5">
-        <div className="w-1/2 flex-col">
-          <h1>Pros:</h1>
-          <ul>
-            <li>Pro one</li>
-            <li>Pro Two</li>
+    <div className= "bg-gradient-to-tr from-gray-700 via-gray-900 to-black w-full h-1/2 flex flex-col items-center justify-center text-blue-200 rounded-xl">
+      <h1 className="text-6xl font-bold m-2 border-b-2 border-white w-3/4 text-center">Review Rune</h1>
+      <div className="flex flex-row items-center justify-center p-5 text-white w-3/4 ">
+        <div className="w-1/5 flex-col text-white">
+          <h1 className="text-4xl  text-gray-300">Pros:</h1>
+          <ul className="text-2xl text-white">
+            {reviewArray?.positive.pros.map((review) => <li className="text-white">{review}</li>)}
           </ul>
         </div>
-        <div className="w-1/2">
-          <h1>Cons:</h1>
+        <div className="w-1/5 flex-col">
+          <h1 className="text-4xl text-gray-300">Cons:</h1>
+              <ul className="text-2xl text-white">
+            {reviewArray?.negative.map((review) => <li className="text-white">{review}</li>)}
+          </ul>
+        </div>
+        <div className="w-3/5 flex-col" >
+          <h1 className="text-4xl text-gray-300">Summary:</h1>
+          <p className="text-lg text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, nihil. Beatae, eaque expedita! Nisi, earum reprehenderit? Aliquam eos, non sint, eveniet nam ipsum aliquid tempora, tempore vel animi odit maiores!</p>
         </div>
       </div>
     </div>
