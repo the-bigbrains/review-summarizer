@@ -10,5 +10,8 @@
   "license": "ISC",
   "workspaces": [
     "extension"
-  ]
+  ],
+  "dependencies": {
+    "puppeteer": "^21.3.8"
+  }
 }
