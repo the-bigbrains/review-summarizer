@@ -1,3 +1,4 @@
+import { doc } from "prettier";
 import "./App.css";
 
 function App() {
@@ -20,10 +21,10 @@ function App() {
   };
 
   return (
-    <div className="bg-slate-800 w-96 h-96 flex flex-col items-center justify-center text-white">
-      <div className="text-2xl">Review Rune</div>
+    <div className="bg-gradient-to-tr from-gray-700 via-gray-900 to-black w-96 h-96 flex flex-col items-center justify-center text-blue-200">
+      <div className="text-4xl mb-10 font-bold">Review Rune</div>
       <div>
-        <h1 className="text-xl mb-3">Please Enter your OpenAI API Key:</h1>
+        <h1 className="text-sm mb-2">Please Enter your OpenAI API Key:</h1>
         <div className="flex-row">
           <form>
             <input
@@ -33,23 +34,14 @@ function App() {
               id="api-key"
             />
             <button
-              className="bg-white text-black rounded-md px-1 mx-1 text-lg hover:bg-green-500 hover:text-white"
+              className="bg-white text-black rounded-md px-2 mx-1 text-lg hover:bg-green-500 hover:text-white duration-200"
               onClick={() => {
                 setCookie();
-              }}
-            >
+              }}>
               Submit
             </button>
           </form>
         </div>
-        <button
-          className="mt-2 text-sm"
-          onClick={() => {
-            sendRequest(url);
-          }}
-        >
-          Generate reviews
-        </button>
       </div>
     </div>
   );
