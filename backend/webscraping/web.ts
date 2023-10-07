@@ -1,3 +1,6 @@
+import { positive } from "./positive";
+import { negative } from "./negative";
+
 const puppeteer = require("puppeteer");
 async function run(url: string) {
   const browser = await puppeteer.launch();
@@ -5,27 +8,24 @@ async function run(url: string) {
   await page.goto(url); // go to url
   const html = await page.content();
 
-  //Click on See More Reviews
+  // Use page.evaluate() to find the <a> tag with the specific data-hook attribute
   const linkSelector = 'a[data-hook="see-all-reviews-link-foot"]';
-  await page.waitForSelector(linkSelector);
-  await page.click(linkSelector);
+  const link = await page.evaluate((selector: any) => {
+    const element = document.querySelector(selector);
+    return element ? element.href : null;
+  }, linkSelector);
 
-  await positive(page);//Head over to top positive review page
-  await negative(page);//Head over to top negative review page
+  // If the link is found, navigate to it
+  if (link) {
+    await page.goto(link);
+  } else {
+    console.log("Link not found on the page.");
+  }
 
-
-
-
-  const review = await page.evaluate(() =>
-    Array.from(
-      document.querySelectorAll('div[data-hook="review-collapsed"]'),
-      (element) => ({
-        text: element.textContent?.replace(/\n/g, "").trim() || "",
-      })
-    )
-  );
-  console.log(review);
-  console.log("hello");
+  const review_positive = await positive(page); //Head over to top positive review page
+  const review_negative = await negative(page); //Head over to top negative review page
+  console.log("Negative Reviews: ", review_negative);
+  console.log("Positive Reviews: ", review_positive);
 
   await browser.close(); // close browser
 }

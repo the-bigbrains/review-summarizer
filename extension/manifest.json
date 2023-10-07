@@ -6,9 +6,7 @@
     "content_scripts": [
         {
             "matches": [
-                "https://*.google.com/*",
-                "https://*.amazon.com/*",
-                "https://*.tailwindcss.com/*"
+                "https://*.amazon.com/*"
             ],
             "js": [
                 "./js/content.js"

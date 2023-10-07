@@ -1,6 +1,28 @@
-async function positive(page: any) {
+export async function positive(page: any) {
+  //Click on Positive Reviews
+  const linkSelector = 'a[data-reftag="cm_cr_arp_d_viewpnt_lft"]';
+  const link = await page.evaluate((selector: any) => {
+    const element = document.querySelector(selector);
+    return element ? element.href : null;
+  }, linkSelector);
 
-  const link = 'a:contains("Positive reviews")';
-  await page.waitForSelector(link);
-  await page.click(link);
+  // If the link is found, navigate to it
+  if (link) {
+    await page.goto(link);
+  } else {
+    console.log("Link not found on the page.");
+  }
+
+  const review = await page.evaluate(() =>
+    Array.from(
+      document.querySelectorAll(
+        'div[class="a-row a-spacing-small review-data"]'
+      ),
+      (element) => ({
+        text: element.textContent?.replace(/\n/g, "").trim() || "",
+      })
+    )
+  );
+
+  return review;
 }
