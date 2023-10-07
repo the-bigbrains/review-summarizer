@@ -3,15 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "watch": "webpack -w --config webpack.config.js"
+    "build": "webpack --config ./extension/webpack.config.js",
+    "watch": "webpack -w --config ./extension/webpack.config.js"
   },
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "extension"
-  ],
-  "dependencies": {
-    "puppeteer": "^21.3.8"
-  }
+    "extension",
+    "scraper"
+  ]
 }
