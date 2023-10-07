@@ -1,10 +1,19 @@
 import express from "express";
 import run from "./webscraping/web";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
 
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 app.get("/", async (req, res) => {
+  console.log("request received");
+
   const { productUrl } = req.query;
 
   if (!productUrl) {
@@ -16,7 +25,7 @@ app.get("/", async (req, res) => {
 
   console.log(response);
 
-  res.send(response);
+  res.status(200).send(response);
 });
 
 app.listen(port, () => {
