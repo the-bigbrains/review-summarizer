@@ -14,8 +14,8 @@ function App() {
   };
 
   return (
-    <div className="w-96 h-96 flex flex-col items-center justify-center text-black bg-parchment">
-      <div className="text-4xl mb-10">Review Rune</div>
+    <div className="bg-gradient-to-tr from-gray-700 via-gray-900 to-black w-96 h-96 flex flex-col items-center justify-center text-blue-200">
+      <div className="text-4xl mb-10 font-bold">Review Rune</div>
       <div>
         <h1 className="text-sm mb-2">Please Enter your OpenAI API Key:</h1>
         <div className="flex-row">
@@ -30,8 +30,7 @@ function App() {
               className="bg-white text-black rounded-md px-2 mx-1 text-lg hover:bg-green-500 hover:text-white duration-200"
               onClick={() => {
                 setCookie();
-              }}
-            >
+              }}>
               Submit
             </button>
           </form>
