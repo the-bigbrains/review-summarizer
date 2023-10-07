@@ -22,8 +22,11 @@ app.get("/", async (req, res) => {
   const response = await scrapeReviews(productUrl as any);
 
   // ! send it to GPT pos
+
+  console.log("Getting negative");
   const posGPT = await gptP(response.positive.map((review) => review.text));
 
+  console.log("getting positive");
   // ! send to GPT negative
   const negGPT = await gptN(response.negative.map((review) => review.text));
 

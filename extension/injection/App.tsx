@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import getURL from "../util/getURL";
 import "../src/App.css";
 
 interface Reviews {
-  negative: { text: string }[];
-  positive: { text: string }[];
+  negative: string[];
+  positive: string[];
 }
 
 function App() {
@@ -18,11 +17,27 @@ function App() {
         return res;
       };
 
-      const reviews: Reviews = await sendRequest(getURL());
-
+      const reviews: Reviews = await sendRequest(window.location.href);
       console.log(reviews);
+      console.log("9");
 
-      setReviewArray(reviews);
+      const positiveArray =
+        typeof reviews.positive[0] === "string"
+          ? JSON.parse(reviews.positive[0].split(/\n/g).join(""))
+          : reviews.positive;
+      const negativeArray =
+        typeof reviews.negative[0] === "string"
+          ? JSON.parse(reviews.negative[0].split(/\n/g).join(""))
+          : reviews.negative;
+
+      const newReviewArray = {
+        positive: positiveArray,
+        negative: negativeArray,
+      };
+
+      console.log("sanitized:", newReviewArray);
+
+      setReviewArray(newReviewArray as any);
     };
 
     test();

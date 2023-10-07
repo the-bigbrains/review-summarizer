@@ -3,7 +3,8 @@ import { negative } from "./negative";
 import puppeteer from "puppeteer";
 
 export default async function scrapeReviews(url: string) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: "new" });
+
   const page = await browser.newPage();
   await page.goto(url); // go to url
   const html = await page.content();
