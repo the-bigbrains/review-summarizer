@@ -8,7 +8,8 @@
             "matches": [
                 "https://*.amazon.com/*",
                 "https://*.yelp.com/*",
-                "https://*.tripadvisor.com/*"
+                "https://*.tripadvisor.com/*",
+                "https://*.airbnb.com/*"
             ],
             "js": [
                 "./js/inject.js"

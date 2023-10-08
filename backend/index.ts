@@ -5,6 +5,7 @@ import gptN from "./gpt/gptNegative";
 import gptP from "./gpt/gptPositive";
 import taReview from "./webscraping/tripadvisor/taReview";
 import yelpReview from "./webscraping/yelp/yelpReview";
+import airScrape from "./webscraping/airbnb/airScrape";
 
 const app = express();
 const port = 3000;
@@ -24,22 +25,26 @@ app.get("/", async (req, res) => {
   let response: any = null;
 
   console.log("getting reviews");
-switch (true) { 
-  case /amazon\.com/i.test(productUrl.toString()):
-    console.log("amazon");
-    response = await scrapeReviews(productUrl as any);
-    break;
-  case /tripadvisor\.com/i.test(productUrl.toString()):
-    console.log("tripadvisor");
-    response = await taReview(productUrl as any);
-    break;
-  case /yelp\.com/i.test(productUrl.toString()):
-    console.log("yelp");
-    response = await yelpReview(productUrl as any);
-    break;
-  default:
-    break;
-}
+  switch (true) {
+    case /amazon\.com/i.test(productUrl.toString()):
+      console.log("amazon");
+      response = await scrapeReviews(productUrl as any);
+      break;
+    case /tripadvisor\.com/i.test(productUrl.toString()):
+      console.log("tripadvisor");
+      response = await taReview(productUrl as any);
+      break;
+    case /yelp\.com/i.test(productUrl.toString()):
+      console.log("yelp");
+      response = await yelpReview(productUrl as any);
+      break;
+    case /airbnb\.com/i.test(productUrl.toString()):
+      console.log("airbnb");
+      response = await airScrape(productUrl as any);
+      break;
+    default:
+      break;
+  }
 
   // ! send it to GPT pos
 
