@@ -18,7 +18,6 @@ export default async function airScrape(url: string) {
 
   const review: { text: string }[] = await airReview(page);
 
-  console.log(review)
   await browser.close(); // close browser
   
 
