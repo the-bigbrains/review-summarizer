@@ -21,6 +21,4 @@ export default async function yelpReview(url: string) {
   return review;
 }
 
-const url = "https://www.yelp.com/biz/daniels-cheesesteak-house-winter-garden"
-yelpReview(url);
 
