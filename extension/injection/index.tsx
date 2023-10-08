@@ -12,23 +12,26 @@ switch (true) {
     section = document.getElementById("ask-btf_feature_div");
     break;
   case /tripadvisor\.com/i.test(url.toString()):
-    section = document.getElementsByClassName("icAII R2 H _Z");
+    section = document.getElementById("component_43");
     break;
   case /yelp\.com/i.test(url.toString()):
     section = document.getElementsByClassName(" css-laf5de");
     break;
   case /airbnb\.com/i.test(url.toString()):
-    section = document.getElementsByClassName("_16e70jgn");
+    section = document.getElementsByClassName("rjiv01r dir dir-ltr");
     break;
   default:
     break;
 }
 
+console.log(section);
+
 if (section instanceof HTMLElement) {
   section.appendChild(elem);
 } else if (section instanceof HTMLCollection) {
-  section[0]?.appendChild(elem);
+  section[0].appendChild(elem);
 }
+console.log("after", section);
 //section?.appendChild(elem);
 const rootDiv = ReactDOM.createRoot(elem);
 rootDiv.render(<App />);
