@@ -45,7 +45,7 @@ body {
   /* Gives that scrolling effect as the typing happens */
   letter-spacing: 0.05em;
   /* Adjust as needed */
-  animation: typing 10.5s steps(80, end), blink-caret 0.25s step-end infinite;
+  animation: typing 2.5s steps(80, end), blink-caret 0.25s step-end infinite;
 }
 
 .type-slow {
@@ -72,6 +72,24 @@ body {
   }
 
   50% {
-    border-color: orange;
+    border-color: white;
+  }
+}
+.color-box {
+  background-color: red;
+  animation: colorChange 1s infinite;
+}
+
+@keyframes colorChange {
+  0% {
+    background-color: red;
+  }
+
+  50% {
+    background-color: yellow;
+  }
+
+  0% {
+    background-color: red;
   }
 }

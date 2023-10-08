@@ -15,7 +15,7 @@ import App from "./App";
 // };
 
 const elem = document.createElement("div");
-elem.className = "container";
+elem.className = "w-full px-5 flex justify-center items-center";
 const section = document.getElementById("ask-btf_feature_div");
 section?.appendChild(elem);
 const rootDiv = ReactDOM.createRoot(elem);

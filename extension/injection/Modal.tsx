@@ -1,0 +1,16 @@
+import React from "react";
+
+const Modal = (props: React.HTMLAttributes<HTMLDivElement>) => {
+  const { children, ...rest } = props;
+
+  return (
+    <div
+      className="font-serif flex-col bg-[#C0C0C0] w-full h-fit items-center text-blue-200 p-3 pt-1 gap-y-3 flex border-b-4 border-r-4 border-b-black border-r-black border-l-4 border-l-zinc-300 border-t-4 border-t-zinc-300"
+      {...rest}
+    >
+      {children}
+    </div>
+  );
+};
+
+export default Modal;

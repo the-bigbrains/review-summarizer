@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../src/App.css";
+import Modal from "./Modal";
 
 interface RawReview {
   negative:
@@ -60,7 +61,7 @@ function App() {
   }, []);
 
   return (
-    <div className="font-serif flex-col bg-[#C0C0C0] w-full h-fit items-center text-blue-200 p-3 pt-1 gap-y-3 flex border-b-4 border-r-4 border-b-black border-r-black border-l-4 border-l-zinc-300 border-t-4 border-t-zinc-300">
+    <Modal>
       <div className="w-full h-fit p-1 bg-gradient-to-r from-[#000181] to-[#1084D0] ">
         <img
           width={240}
@@ -79,7 +80,7 @@ function App() {
           <p className="text-md text-zinc-100">{reviewArray?.summary}</p>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
 

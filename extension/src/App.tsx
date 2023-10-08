@@ -1,4 +1,3 @@
-import { doc } from "prettier";
 import "./App.css";
 
 function App() {
