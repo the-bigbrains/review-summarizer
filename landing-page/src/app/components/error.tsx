@@ -3,31 +3,12 @@ import Draggable, { DraggableCore } from "react-draggable";
 import Modal from "./Modal";
 import { Icon } from "@iconify/react";
 
-export default function Singlebards() {
-  let [count, setCount] = useState<number>(0);
-  const remove = () => {
-    var element = document.getElementById("bards");
-    element!.className += " opacity-0";
-    setCount((count += 1));
-    setTimeout(() => {
-      element!.className =
-        "w-full flex flex-col items-center justify-center absolute top-96 right-96 z-20";
-    }, 250);
-
-    if (count >= 10) {
-      alert("Sorry, you can't do that.");
-    }
-  };
-
-  const actuallyRemove = () => {
-    var element = document.getElementById("bards");
-    element!.className += " opacity-0";
-  };
+export default function Error() {
 
   return (
     <Draggable>
       <Modal
-        id="bards"
+        id="err"
         className="p-3 pt-1 absolute z-20"
         style={{
           left: `calc(60vw * ${Math.random()})`,
@@ -35,16 +16,16 @@ export default function Singlebards() {
         }}
       >
         <div className="flex gap-x-2 justify-end w-full h-fit p-1 bg-gradient-to-r from-[#000181] to-[#1084D0] ">
-          <Modal className="text-black" onClick={() => actuallyRemove()}>
+          <Modal className="text-black">
             <Icon icon="ic:sharp-minimize" height={16} />
           </Modal>
           <Modal onClick={() => remove()}>
             <Icon icon="ph:x-bold" height={16} className="text-black" />
           </Modal>
         </div>
-        <div className="p-4 py-8 color-box">
+        <div className="p-4 py-8">
           <h1 className="text-2xl text-black font-black">
-            SINGLE BARDS IN YOUR AREA
+            Nar Bar is not working
           </h1>
         </div>
       </Modal>

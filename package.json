@@ -17,6 +17,8 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@react95/clippy": "^1.0.11",
+    "clippyts": "^1.0.4",
     "react-draggable": "^4.4.6"
   }
 }
