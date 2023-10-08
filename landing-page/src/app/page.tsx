@@ -9,7 +9,7 @@ import Clippy from "../../public/clippy-microsoft.gif";
 import straightIcon from "../../public/icon-straight.png";
 import ai from "../../public/ai.png";
 
-import Draggable, { DraggableCore } from "react-draggable";
+import Draggable from "react-draggable";
 import Modal from "./components/Modal";
 import { Icon } from "@iconify/react";
 
@@ -37,16 +37,18 @@ export default function Home() {
                 <Image alt={"icon"} src={wordart} height={600} width={800} />
                 {/**omnious one sentence description */}
                 <p className="max-w-xl text-2xl">
-                  Tired of reading reviews that are too long? We are too. That's
-                  why we created{" "}
+                  Tired of reading dozens of reviews shopping?
+                  <br /> We are too.
+                  <br />
+                  That's why we created{" "}
                   <Image
                     src={straightIcon}
                     alt=""
                     height={30}
                     className="inline"
                   />
-                  . We take the reviews, and summarize them into short, concise
-                  summaries. We hope you enjoy!
+                  ;<br /> a tool that takes reviews and processes them into
+                  short, concise summaries!
                 </p>
               </Modal>
             </div>
