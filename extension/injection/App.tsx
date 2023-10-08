@@ -57,7 +57,7 @@ function App() {
       setReviewArray(newReviewArray as any);
     };
 
-    test();
+    //test();
   }, []);
 
   return (
