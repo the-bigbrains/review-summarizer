@@ -22,7 +22,6 @@ app.get("/", async (req, res) => {
     res.send("empty productURL");
     return;
   }
-
   let response: any = null;
 
   console.log("getting reviews");
@@ -44,6 +43,7 @@ app.get("/", async (req, res) => {
       response = await airScrape(productUrl as any);
       break;
     default:
+      console.log("default");
       break;
   }
 
