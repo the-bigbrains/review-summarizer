@@ -7,6 +7,7 @@ import wordart from "../../public/wordart.png";
 import Singlebards from "./components/singlebards";
 import Clippy from "../../public/clippy-microsoft.gif";
 import straightIcon from "../../public/icon-straight.png";
+import ai from "../../public/ai.png";
 
 import Draggable, { DraggableCore } from "react-draggable";
 import Modal from "./components/Modal";
@@ -19,7 +20,7 @@ export default function Home() {
       <Singlebards />
       <Image className="absolute bottom-0 left-0" src={Clippy} alt="" />
 
-      <div className="w-full h-full flex flex-col gap-x-4">
+      <div className="w-full h-full flex flex-col gap-y-4">
         <section className="flex justify-center items-center w-full min-h-[70vh] outline-dashed">
           <Draggable>
             <div className="w-full flex flex-col items-center justify-center">
@@ -62,6 +63,14 @@ export default function Home() {
             <p className="type-slow text-4xl w-fit">2. done</p>
             <p className="text-4xl w-fit typewriter ">It's that simple</p>
           </div>
+        </section>
+
+        <section className="w-full min-h-[70vh] flex items-center flex-col justify-evenly">
+          <h1 className="text-7xl h-1/3 flex items-center">
+            How does it work?
+          </h1>
+          <Image alt="ai" src={ai} height={420} />
+          <p className="text-4xl w-fit ">It's that simple</p>
         </section>
 
         <section className="min-h-[70vh] w-full flex items-center justify-center flex-col">
