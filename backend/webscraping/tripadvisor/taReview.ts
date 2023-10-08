@@ -12,10 +12,9 @@ export default async function yelpReview(url: string) {
       })
     )
   );
- 
+
   await browser.close(); // close browser
 
   
   return review;
 }
-

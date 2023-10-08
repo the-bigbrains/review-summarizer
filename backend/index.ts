@@ -22,7 +22,10 @@ app.get("/", async (req, res) => {
     res.send("empty productURL");
     return;
   }
-  let response: any = null;
+  let response: {
+    positive: { text: string }[];
+    negative: { text: string }[];
+  };
 
   console.log("getting reviews");
   switch (true) {
