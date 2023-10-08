@@ -10,7 +10,7 @@ export default async function gpt(pos: string[], neg: string[]) {
         Provide concise and insightful summaries of both reviews, highlighting both the pros and cons of the product. 
         Keep your summaries short (less than or equal to 50 words), clear, and accessible to users of all familiarity levels with the product. 
         Inject a touch of wit to maintain a light-hearted tone throughout. The summary should be about the basic overall product of items and whether you recommend this item or not.
-        Return the summary and only the summary, (Do not response with emoji):
+        Return the summary of only ONE summary, (Do not response with emoji):
     
         ${pos}
         ${neg}`,
