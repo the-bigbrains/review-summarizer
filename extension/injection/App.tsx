@@ -13,37 +13,17 @@ interface RawReview {
     | {
         pros: string[];
       }[];
+  summary: string | null;
 }
 
 interface SanitizedReview {
   positive: { pros: string[] };
   negative: { cons: string[] };
+  summary: string | null;
 }
 
 function App() {
-  const [reviewArray, setReviewArray] = useState<SanitizedReview | null>({
-    positive: {
-      pros: [
-        "Exercise enhancement",
-        "Deep muscle recovery",
-        "Targeted massage & therapy",
-        "Versatility",
-        "Long-lasting durability",
-        "Compact and portable",
-      ],
-    },
-    negative: {
-      cons: [
-        "Flimsy / not as sturdy as expected",
-        "Too hard and caused pain",
-        "Not as firm as desired",
-        "Rock hard and lightweight",
-        "Larger diameter than expected",
-        "Not what was expected",
-        "Arrived with a dent and doesn't stand straight",
-      ],
-    },
-  });
+  const [reviewArray, setReviewArray] = useState<SanitizedReview | null>();
 
   useEffect(() => {
     const test = async () => {
@@ -68,6 +48,7 @@ function App() {
       const newReviewArray = {
         positive: positiveArray,
         negative: negativeArray,
+        summary: reviews.summary,
       };
 
       console.log("sanitized:", newReviewArray);
@@ -79,23 +60,23 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-tr flex-col from-gray-700 via-gray-900 to-black w-full h-fit items-center text-blue-200 rounded-xl p-3 gap-y-3 flex">
-      <h1 className="text-4xl w-3/4 font-extrabold border-b-2 border-zinc-400 text-center">
-        Review Rune
-      </h1>
+    <div className="font-serif flex-col bg-[#C0C0C0] w-full h-fit items-center text-blue-200 p-3 pt-1 gap-y-3 flex border-b-4 border-r-4 border-b-black border-r-black border-l-4 border-l-zinc-300 border-t-4 border-t-zinc-300">
+      <div className="w-full h-fit p-1 bg-gradient-to-r from-[#000181] to-[#1084D0] ">
+        <img
+          width={240}
+          height={100}
+          src="https://i.imgur.com/vRl4O17.png"
+          alt=""
+        />
+      </div>
 
       <div className="grid items-start w-full grid-cols-3 justify-center p-3 gap-x-3">
         <List yeet={reviewArray?.positive.pros} pos={true} />
         <List yeet={reviewArray?.negative.cons} pos={false} />
 
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold text-gray-300">Summary:</h1>
-          <p className="text-md text-zinc-100">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit,
-            nihil. Beatae, eaque expedita! Nisi, earum reprehenderit? Aliquam
-            eos, non sint, eveniet nam ipsum aliquid tempora, tempore vel animi
-            odit maiores!
-          </p>
+          <h1 className="text-3xl text-black">Summary</h1>
+          <p className="text-md text-zinc-100">{reviewArray?.summary}</p>
         </div>
       </div>
     </div>
@@ -110,27 +91,30 @@ interface ListProps {
 const List = (props: ListProps) => {
   return (
     <div className="flex flex-col justify-center gap-y-2">
-      <h1 className="text-3xl font-bold text-zinc-300">
-        {props.pos ? "Pros" : "Cons"}
-      </h1>
-      <ul className="text-zinc-200 flex flex-col gap-y-2">
-        {props.yeet ? (
-          props.yeet.map((review, i) => (
-            <li
-              className="text-start text-zinc-100 flex gap-x-2 items-start"
-              key={review}
-            >
-              {props.pos ? (
-                <Icon icon="fluent-emoji-flat:thumbs-up" height={20} />
-              ) : (
-                <Icon icon="fluent-emoji-flat:thumbs-down" height={20} />
-              )}
-              {review}
-            </li>
-          ))
-        ) : (
-          <div></div>
-        )}
+      <h1 className="text-3xl text-black">{props.pos ? "Pros" : "Cons"}</h1>
+      <ul className="text-blak flex flex-col gap-y-2">
+        {props.yeet
+          ? props.yeet.map((review, i) => (
+              <li
+                className="text-start text-zinc-100 flex gap-x-2 items-start"
+                key={review}
+              >
+                {props.pos ? (
+                  <Icon icon="fluent-emoji-flat:thumbs-up" height={20} />
+                ) : (
+                  <Icon icon="fluent-emoji-flat:thumbs-down" height={20} />
+                )}
+                {review}
+              </li>
+            ))
+          : Array(5)
+              .fill(0)
+              .map((_, i) => (
+                <div
+                  className="w-full h-6 animate-pulse bg-zinc-400"
+                  key={i}
+                ></div>
+              ))}
       </ul>
     </div>
   );
