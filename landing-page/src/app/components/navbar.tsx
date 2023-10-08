@@ -49,7 +49,7 @@ export default function navbar() {
                 </Modal>
               </div>
               <div className="p-4 py-8 flex flex-col">
-                <h1 className="text-2xl text-black font-black">
+                <h1 className="text-xl text-black font-black">
                   Back in my day, we didn't have this fancy newfangled "internet" you speak of.
                 </h1>
                 <h1>
