@@ -21,6 +21,7 @@ interface SanitizedReview {
 
 function App() {
   const [reviewArray, setReviewArray] = useState<SanitizedReview | null>();
+  const [loading, setLoading] = useState<Boolean | null>(true);
 
   useEffect(() => {
     const test = async () => {
@@ -50,6 +51,7 @@ function App() {
       console.log("sanitized:", newReviewArray);
 
       setReviewArray(newReviewArray as any);
+      setLoading(false);
     };
 
     test();
@@ -61,6 +63,8 @@ function App() {
         Review Rune
       </h1>
       <div className="flex flex-row items-center justify-center p-5 text-white w-3/4 ">
+        {!loading && (
+          <div className="flex flex-row items-center justify-center p-5 text-white w-3/4 ">
         <div className="w-1/5 flex-col text-white">
           <h1 className="text-4xl  text-gray-300">Pros:</h1>
           <ul className="text-2xl text-white">
@@ -87,7 +91,10 @@ function App() {
           </p>
         </div>
       </div>
-    </div>
+        )}
+      {loading && <h1 className="text-4xl text-gray-300">Loading<span className="animate-ellipsis">...</span></h1>}
+      </div>
+      </div>
   );
 }
 
