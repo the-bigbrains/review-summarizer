@@ -3,7 +3,6 @@ import scrapeReviews from "./webscraping/scrapeReviews";
 import cors from "cors";
 import gptN from "./gpt/gptNegative";
 import gptP from "./gpt/gptPositive";
-import gpt from "./gpt/gpt";
 
 const app = express();
 const port = 3000;
