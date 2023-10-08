@@ -11,8 +11,8 @@ export default async function gptN(review: string[]) {
         return a summary in the following JSON format and ONLY the JSON format in your response:
 
         {
-          pros: string[],
-          cons: string[],
+          positive: string[],
+          negative: string[],
           summary: string
         }
 

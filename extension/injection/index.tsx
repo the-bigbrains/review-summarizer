@@ -24,11 +24,14 @@ switch (true) {
     break;
 }
 
+console.log(section);
+
 if (section instanceof HTMLElement) {
   section.appendChild(elem);
 } else if (section instanceof HTMLCollection) {
-  section[0]?.appendChild(elem);
+  section[0].appendChild(elem);
 }
+console.log("after", section);
 //section?.appendChild(elem);
 const rootDiv = ReactDOM.createRoot(elem);
 rootDiv.render(<App />);
