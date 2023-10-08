@@ -13,12 +13,8 @@ export default async function yelpReview(url: string) {
     )
   );
  
-  console.log(review)
   await browser.close(); // close browser
 
   return review;
 }
-const url = "https://www.tripadvisor.com/Restaurant_Review-g188590-d13511379-Reviews-Restaurant_Bougainville-Amsterdam_North_Holland_Province.html"
-let res = yelpReview(url)
-console.log(res)
 

@@ -14,11 +14,7 @@ export default async function yelpReview(url: string) {
     )
   );
  
-  console.log(review);
-
   await browser.close(); // close browser
 
   return review;
 }
-
-
