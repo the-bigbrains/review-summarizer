@@ -15,10 +15,16 @@ switch (true) {
     section = document.getElementById("component_43");
     break;
   case /yelp\.com/i.test(url.toString()):
-    section = document.getElementsByClassName(" css-laf5de");
+    section = document.getElementsByClassName("css-13merx8");
+    for (let i = 0; i < section.length; i++) {
+      if (section[i].textContent === "Recommended Reviews") {
+        section = section[i];
+        break;
+      }
+    }
     break;
   case /airbnb\.com/i.test(url.toString()):
-    section = document.getElementsByClassName("rjiv01r dir dir-ltr");
+    section = document.getElementsByClassName("htu4pt2 dir dir-ltr");
     break;
   default:
     break;
