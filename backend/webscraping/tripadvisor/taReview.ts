@@ -1,4 +1,4 @@
-import { usePuppeteer } from "../hooks/usePuppeteer";
+import { usePuppeteer } from "../customHooks/usePuppeteer";
 
 export default async function yelpReview(url: string) {
   const { browser, page } = await usePuppeteer(url); // use puppeteer to open a browser and a page
@@ -7,7 +7,7 @@ export default async function yelpReview(url: string) {
 
   const review = await page.evaluate(() =>
     Array.from(
-      document.querySelectorAll('p[class="comment__09f24__D0cxf css-qgunke"]'),
+      document.querySelectorAll('span[class="yCeTE"]'),
       (element) => ({
         text: element.textContent?.replace(/\n/g, "").trim() || "",
       })
@@ -21,6 +21,6 @@ export default async function yelpReview(url: string) {
   return review;
 }
 
-const url = "https://www.yelp.com/biz/daniels-cheesesteak-house-winter-garden"
+const url = "https://www.tripadvisor.com/AttractionProductReview-g34515-d17716239-2_Hour_Glass_Bottom_Guided_Kayak_Eco_Tour_in_Rainbow_Springs_Small_Group-Orlando_Fl.html"
 yelpReview(url);
 

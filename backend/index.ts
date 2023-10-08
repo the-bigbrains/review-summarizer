@@ -1,5 +1,5 @@
 import express from "express";
-import scrapeReviews from "./webscraping/amazonScrape/amazonScrape";
+import scrapeReviews from "./webscraping/amazon/amazonScrape";
 import cors from "cors";
 import gptN from "./gpt/gptNegative";
 import gptP from "./gpt/gptPositive";
