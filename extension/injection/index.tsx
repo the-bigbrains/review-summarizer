@@ -1,23 +1,27 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-/*
-! url -> call scraper -> feed scraper data into gpt -> output gets displayed here in content.ts
-*/
-// const scrape = async function () {
-//   const url = getURL();
 
-//   const response = await fetch(`http://localhost:3000/?productUrl=${url}`);
+const url = document.URL;
 
-//   const data = await response.json();
-//   console.log(data);
-//   return data;
-// };
+let targetId = "";
+
+switch (true) {
+  case /amazon\.com/i.test(url.toString()):
+    targetId = "ask-btf_feature_div";
+    break;
+  case /tripadvisor\.com/i.test(url.toString()):
+    break;
+  case /yelp\.com/i.test(url.toString()):
+    break;
+  case /airbnb\.com/i.test(url.toString()):
+    break;
+  default:
+    break;
+}
 
 const elem = document.createElement("div");
 elem.className = "container";
-const section = document.getElementById("ask-btf_feature_div");
+const section = document.getElementById(targetId);
 section?.appendChild(elem);
 const rootDiv = ReactDOM.createRoot(elem);
-
 rootDiv.render(<App />);
