@@ -12,6 +12,7 @@ export default async function gptN(review: string[]) {
 
         {
           cons: string[],
+          summary: string
         }
 
         Review: ${review}`,

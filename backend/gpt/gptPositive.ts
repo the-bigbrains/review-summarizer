@@ -12,6 +12,7 @@ export default async function gptP(review: string[]) {
 
         {
           pros: string[],
+          summary: string
         }  
 
         Review: ${review}`,

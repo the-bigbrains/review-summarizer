@@ -10,12 +10,8 @@ export default async function gpt(pos: string[], neg: string[]) {
         Provide concise and insightful summaries of both reviews, highlighting both the pros and cons of the product. 
         Keep your summaries short, clear, and accessible to users of all familiarity levels with the product. 
         Inject a touch of wit to maintain a light-hearted tone throughout. The summary should be  about the basic overall product of items and whether you recommend this item or not.
-        Return a summary in the following JSON format and ONLY the JSON format in your response, (Do not response with emoji):
-        {
-            pros: string[]
-            cons: string[]
-            item_summary:
-        }:
+        Return the summary and only the summary (Do not response with emoji):
+
         ${pos}
         ${neg}`,
       },
@@ -24,5 +20,5 @@ export default async function gpt(pos: string[], neg: string[]) {
     temperature: 0.7,
   });
 
-  return completion.choices;
+  return completion.choices[0].message.content;
 }

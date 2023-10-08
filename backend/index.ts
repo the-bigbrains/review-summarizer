@@ -3,6 +3,7 @@ import scrapeReviews from "./webscraping/amazon/amazonScrape";
 import cors from "cors";
 import gptN from "./gpt/gptNegative";
 import gptP from "./gpt/gptPositive";
+import gpt from "./gpt/gpt";
 
 const app = express();
 const port = 3000;
@@ -32,10 +33,11 @@ app.get("/", async (req, res) => {
 
   const positive = posGPT.map((pos) => pos.message.content) as string[];
   const negative = negGPT.map((neg) => neg.message.content) as string[];
+  const summary = await gpt(positive, negative);
 
   // ! return the final
 
-  res.status(200).send({ positive, negative });
+  res.status(200).send({ positive, negative, summary });
 });
 
 app.listen(port, () => {
