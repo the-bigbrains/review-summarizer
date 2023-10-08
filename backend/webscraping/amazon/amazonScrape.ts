@@ -1,5 +1,5 @@
-import { positive } from "./positive";
-import { negative } from "./negative";
+import { positive } from "./positiveReview";
+import { negative } from "./negativeReview";
 import puppeteer from "puppeteer";
 
 export default async function scrapeReviews(url: string) {
