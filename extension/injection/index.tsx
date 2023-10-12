@@ -11,9 +11,6 @@ switch (true) {
   case /amazon\.com/i.test(url.toString()):
     section = document.getElementById("ask-btf_feature_div");
     break;
-  case /tripadvisor\.com/i.test(url.toString()):
-    section = document.getElementById("component_43");
-    break;
   case /yelp\.com/i.test(url.toString()):
     section = document.getElementsByClassName("css-13merx8");
     for (let i = 0; i < section.length; i++) {
@@ -22,9 +19,6 @@ switch (true) {
         break;
       }
     }
-    break;
-  case /airbnb\.com/i.test(url.toString()):
-    section = document.getElementsByClassName("htu4pt2 dir dir-ltr");
     break;
   default:
     break;
