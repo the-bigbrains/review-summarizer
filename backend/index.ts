@@ -63,6 +63,7 @@ app.get("/", async (req, res) => {
   }
 
   const yeet = await generalGPT(response.map((txt) => txt.text));
+
   console.log("yeet", yeet);
 
   // ! send it to GPT pos
