@@ -9,22 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@iconify/react": "^4.1.1",
+    "@react95/clippy": "^1.0.11",
     "clippyjs": "^0.0.3",
     "next": "13.5.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-draggable": "^4.4.6"
   },
   "devDependencies": {
-    "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "postcss": "^8",
-    "tailwindcss": "^3",
-    "typescript": "^5"
+    "tailwindcss": "^3"
   },
   "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
   "main": "next.config.js",
