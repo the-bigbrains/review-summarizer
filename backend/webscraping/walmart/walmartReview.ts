@@ -3,25 +3,26 @@ import { usePuppeteer } from "../customHooks/usePuppeteer";
 export default async function walmartReview(url: string) {
   const { browser, page } = await usePuppeteer(url); // use puppeteer to open a browser and a page
 
-  const review = await page.evaluate(() => {
-    const elements = Array.from(
-      document.querySelectorAll('div[class="w_0Uhy w_QddF"]')
-    );
-
-    // Slice the array to get the first two elements
-    const slicedElements = elements.slice(0, 2);
-
-    return slicedElements.map((element) => ({
-      text: element.textContent?.replace(/\n/g, "").trim() || "",
-    }));
+  await page.evaluate(() => {
+    window.scrollBy(0, 1000); // Adjust the scroll distance as needed
   });
 
-  console.log("Here review is " + review);
+  console.log("opened browser and page");
+  await page.waitForSelector('div[class="w_HmLO"]');
+  console.log("waited for selector");
+
+  const reviewText = await page.$$eval("div.w_HmLO", (elements) => {
+    return elements.map((element) => {
+      return { text: element.textContent?.trim() || "" };
+    });
+  });
+
+  console.log("Span Text Array:", reviewText);
 
   await browser.close(); // close browser
 
-  return review;
+  return reviewText;
 }
-const url = "https://www.walmart.com/en/reviews/product/1736740710";
-
-const res = walmartReview(url);
+const url =
+  "https://www.walmart.com/ip/Shark-AI-Ultra-Self-Empty-Robot-Vacuum-Bagless-60-Day-Capacity-Base-Precision-Home-Mapping-Perfect-for-Pet-Hair-Wi-Fi-AV2511AE/1883965277?athbdg=L1700";
+walmartReview(url).then((data) => console.log(data));

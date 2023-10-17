@@ -12,7 +12,9 @@ export default async function targetReview(url: string) {
   const reviewText = await page.$$eval(
     'div[data-test="review-card--text"]',
     (elements) => {
-      return elements.map((element) => element.textContent);
+      return elements.map((element) => {
+        return { text: element.textContent || '' } as { text: string }; // Use type assertion to ensure non-null string
+      });
     }
   );
 

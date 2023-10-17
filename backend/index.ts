@@ -7,6 +7,7 @@ import gpt from "./gpt/gpt";
 import yelpReview from "./webscraping/yelp/yelpReview";
 import airScrape from "./webscraping/airbnb/airScrape";
 import generalGPT from "./gpt/generalGPT";
+import targetReview from "./webscraping/target/targetReview";
 
 const app = express();
 const port = 3000;
@@ -56,6 +57,10 @@ app.get("/", async (req, res) => {
     case /airbnb\.com/i.test(productUrl.toString()):
       console.log("airbnb");
       response = await airScrape(productUrl.toString());
+      break;
+    case /target\.com/i.test(productUrl.toString()):
+      console.log("target");
+      response = await targetReview(productUrl.toString());
       break;
     default:
       console.log("default");
