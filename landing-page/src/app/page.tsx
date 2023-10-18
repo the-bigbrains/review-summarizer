@@ -96,7 +96,7 @@ export default function Home() {
                 </div>
           {/** this can be be both **/}
           <h1 className="text-7xl h-1/2 flex items-center">
-            How to use Review Runes:
+            How to use Review Generator 9000:
           </h1>
           <div className="flex flex-col gap-y-4 h-1/2 min-w-max justify-evenly">
             <p className="text-4xl w-fit">1. download it</p>
