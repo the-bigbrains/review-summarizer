@@ -1,6 +1,9 @@
 import openai from "./client";
 
-export default async function gptP(review: string[]) {
+export default async function generatePoints(
+  review: string[],
+  type: "positive" | "negative"
+) {
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -12,8 +15,7 @@ export default async function gptP(review: string[]) {
     functions: [
       {
         name: "summarizePos",
-        description:
-          "Given an array of reviews for a product, generate a list of bullet points summarizing the positive aspects of the product based on the reviews. Consider factors like product features, quality, and user experiences. The output should be clear and informative.",
+        description: `Given an array of reviews for a product, generate a list of bullet points summarizing ONLY the ${type} aspects of the product based on the reviews. Consider factors like product features, quality, and user experiences. The output should be less than 15 words while being concise, clear and informative.`,
         parameters: {
           type: "object",
           properties: {

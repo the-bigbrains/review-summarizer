@@ -2,15 +2,15 @@ import puppeteer from "puppeteer";
 
 export default async function scrapeReviews(url: string) {
   const browser = await puppeteer.launch({ headless: "new" });
+  console.log("puppeteer launched for url ", url);
 
   const page = await browser.newPage();
-  await page.goto(url);
-  await page.content();
-
   //attempt to emulate human user
   await page.setUserAgent(
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   );
+
+  await page.goto(url);
 
   const linkSelector = 'a[data-hook="see-all-reviews-link-foot"]';
 

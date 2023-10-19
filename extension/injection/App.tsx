@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../src/App.css";
 import Modal from "./Modal";
+import amazonScrape from "../../backend/webscraping/amazon/amazonScrape";
 
 interface RawReview {
   negative:
@@ -24,39 +25,83 @@ interface SanitizedReview {
 }
 
 function App() {
-  const [reviewArray, setReviewArray] = useState<SanitizedReview | null>();
+  const [pros, setPros] = useState<string[]>([]);
+  const [cons, setCons] = useState<string[]>([]);
+  const [summary, setSummary] = useState();
 
   useEffect(() => {
     const test = async () => {
-      const sendRequest = async (url: string) => {
-        const yeet = await fetch(
+      const getRawData = async (url: string) => {
+        console.log("scraping");
+
+        const response = await fetch(
           `http://localhost:3000/amazon?productUrl=${url}`
         );
-        const res = await yeet.json();
-        return res;
+        const result = (await response.json()) as {
+          data: Awaited<ReturnType<typeof amazonScrape>>;
+        };
+
+        return result?.data;
       };
 
-      const reviews: RawReview = await sendRequest(window.location.href);
-      console.log("Reviews", reviews);
+      const generateBulletPoints = async (
+        rawData: string[],
+        type: "positive" | "negative"
+      ) => {
+        console.log(`requesting ${type} reviews summary`);
+        if (!rawData.length) {
+          console.log("rawData is an empty array");
+          return;
+        }
 
-      const positiveArray =
-        typeof reviews.positive[0] === "string"
-          ? JSON.parse(reviews.positive[0].split(/\n/g).join(""))
-          : reviews.positive;
-      const negativeArray =
-        typeof reviews.negative[0] === "string"
-          ? JSON.parse(reviews.negative[0].split(/\n/g).join(""))
-          : reviews.negative;
+        const response = await fetch(`http://localhost:3000/amazon-points`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: { reviews: rawData, type } }),
+        });
+        const data = (await response.json()) as {
+          data?: string[];
+          error?: string;
+        };
+        console.log("result:", data);
 
-      const newReviewArray = {
-        positive: positiveArray,
-        negative: negativeArray,
-        summary: reviews.summary,
+        if (type === "positive") {
+          setPros(data.data || []);
+        } else {
+          setCons(data.data || []);
+        }
       };
 
-      console.log("sanitized:", newReviewArray);
+      const getSummary = async (
+        positiveReview: string[],
+        negativeReview: string[]
+      ) => {
+        const response = await fetch(`http://localhost:3000/amazon-summary`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            positive: positiveReview,
+            negative: negativeReview,
+          }),
+        });
 
-      setReviewArray(newReviewArray as any);
+        const data = await response.json();
+      };
+
+      const reviews = await getRawData(window.location.href);
+      if (!reviews) {
+        console.log("reviews are empty");
+        return;
+      }
+
+      await Promise.all([
+        generateBulletPoints(reviews.positive, "positive"),
+        generateBulletPoints(reviews.positive, "negative"),
+      ]);
     };
 
     test();
@@ -74,13 +119,13 @@ function App() {
       </div>
 
       <div className="grid items-start w-full grid-cols-3 justify-center p-3 gap-x-3">
-        <List yeet={reviewArray?.positive.pros} pos={true} />
-        <List yeet={reviewArray?.negative.cons} pos={false} />
+        <List yeet={pros} pos={true} />
+        <List yeet={cons} pos={false} />
 
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl text-black">Summary</h1>
-          {reviewArray ? (
-            <p className="text-md ">{reviewArray.summary}</p>
+          {summary ? (
+            <p className="text-md ">{summary}</p>
           ) : (
             <>
               {Array(3)
@@ -101,7 +146,7 @@ function App() {
 }
 
 interface ListProps {
-  yeet: string[] | undefined;
+  yeet: string[];
   pos: boolean;
 }
 
@@ -110,9 +155,9 @@ const List = (props: ListProps) => {
     <div className="flex flex-col justify-center gap-y-2">
       <h1 className="text-3xl text-black">{props.pos ? "Pros" : "Cons"}</h1>
       <ul className="text-blak flex flex-col gap-y-2">
-        {props.yeet
+        {props.yeet.length
           ? props.yeet.map((review, i) => (
-              <li className="text-start flex gap-x-2 items-start" key={review}>
+              <li className="text-start flex gap-x-2 items-start" key={i}>
                 {props.pos ? (
                   <Icon icon="fluent-emoji-flat:thumbs-up" height={20} />
                 ) : (
