@@ -5,22 +5,34 @@ export default async function gptP(review: string[]) {
     messages: [
       {
         role: "user",
-        content: `You are an experienced online review judge tasked with summarizing product reviews. 
-        Provide concise and insightful summaries of user comments, consider you are given a top positive review highlights the pro. 
-        Keep your summaries short (less than or equal to 50 words), clear, and accessible to users of all familiarity levels with the product. 
-        return a summary in the following JSON format and ONLY the JSON format in your response:
-
-        {
-          pros: string[],
-          summary: string
-        }  
-
-        Review: ${review}`,
+        content: JSON.stringify(review),
       },
     ],
-    model: "gpt-3.5-turbo",
+
+    functions: [
+      {
+        name: "summarizePos",
+        description:
+          "Given an array of reviews for a product, generate a list of bullet points summarizing the positive aspects of the product based on the reviews. Consider factors like product features, quality, and user experiences. The output should be clear and informative.",
+        parameters: {
+          type: "object",
+          properties: {
+            data: {
+              type: "array",
+              description:
+                "Array of summarized pros of the product based on the reviews",
+              items: {
+                type: "string",
+              },
+            },
+          },
+        },
+      },
+    ],
+    function_call: "auto",
+    model: "gpt-3.5-turbo-16k",
     temperature: 0.7,
   });
 
-  return completion.choices;
+  return completion.choices[0].message.function_call?.arguments;
 }
