@@ -4,44 +4,47 @@ export default async function scrapeReviews(url: string) {
   const browser = await puppeteer.launch({ headless: "new" });
 
   const page = await browser.newPage();
-  await page.goto(url); // go to url
+  await page.goto(url);
   await page.content();
 
-  // Use page.evaluate() to find the <a> tag with the specific data-hook attribute
+  //attempt to emulate human user
+  await page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+  );
+
   const linkSelector = 'a[data-hook="see-all-reviews-link-foot"]';
 
-  const link = await page.evaluate((selector) => {
-    const element: HTMLAnchorElement | null = document.querySelector(selector);
-    return element ? element.href : null;
-  }, linkSelector);
+  console.log("Looking for element with selector ", linkSelector);
+  const anchorElHandle = await page.waitForSelector(linkSelector);
 
-  if (!link) {
-    console.log("link not found on the page");
+  if (!anchorElHandle) {
+    console.log("element not found");
     return;
   }
 
-  // If the link is found, navigate to it
-  await page.goto(link);
+  console.log("url before ", page.url());
+  await anchorElHandle?.click();
+  await page.waitForNavigation();
+  console.log("url after ", page.url());
 
   const reviewSelectorArray = ["lf", "rg"];
   const reviewArrayResolved: string[][] = [];
-
   for (const selector of reviewSelectorArray) {
     const linkSelector = `a[data-reftag="cm_cr_arp_d_viewpnt_${selector}t"]`;
 
-    const link = await page.evaluate((selector) => {
-      const element: HTMLAnchorElement | null =
-        document.querySelector(selector);
-      return element ? element.href : null;
-    }, linkSelector);
+    console.log("Looking for element with selector", linkSelector);
 
-    // If the link is found, navigate to it
-    if (!link) {
-      console.log("Link not found on the page.");
+    const anchorElHandle = await page.waitForSelector(linkSelector);
+
+    if (!anchorElHandle) {
+      console.log("element not found");
       return;
     }
 
-    await page.goto(link);
+    console.log("url before ", page.url());
+    anchorElHandle.click();
+    await page.waitForNavigation();
+    console.log("url after ", page.url());
 
     const review = await page.evaluate(() =>
       Array.from(
