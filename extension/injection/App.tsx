@@ -30,12 +30,12 @@ function App() {
   const [summary, setSummary] = useState();
 
   useEffect(() => {
-    const test = async () => {
-      const getRawData = async (url: string) => {
+    const init = async () => {
+      const getScrapeData = async (url: string) => {
         console.log("scraping");
 
         const response = await fetch(
-          `http://localhost:3000/amazon?productUrl=${url}`
+          `http://localhost:3000/scrape/amazon?productUrl=${url}`
         );
         const result = (await response.json()) as {
           data: Awaited<ReturnType<typeof amazonScrape>>;
@@ -44,7 +44,7 @@ function App() {
         return result?.data;
       };
 
-      const generateBulletPoints = async (
+      const getList = async (
         rawData: string[],
         type: "positive" | "negative"
       ) => {
@@ -54,7 +54,7 @@ function App() {
           return;
         }
 
-        const response = await fetch(`http://localhost:3000/amazon-points`, {
+        const response = await fetch(`http://localhost:3000/list/amazon`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -92,19 +92,19 @@ function App() {
         const data = await response.json();
       };
 
-      const reviews = await getRawData(window.location.href);
+      const reviews = await getScrapeData(window.location.href);
       if (!reviews) {
         console.log("reviews are empty");
         return;
       }
 
       await Promise.all([
-        generateBulletPoints(reviews.positive, "positive"),
-        generateBulletPoints(reviews.positive, "negative"),
+        getList(reviews.positive, "positive"),
+        getList(reviews.positive, "negative"),
       ]);
     };
 
-    test();
+    init();
   }, []);
 
   return (

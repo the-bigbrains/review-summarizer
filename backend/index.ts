@@ -1,14 +1,19 @@
 import express from "express";
 import scrapeAmazonReviews from "./webscraping/amazon/amazonScrape";
 import cors from "cors";
-import generatePoints from "./gpt/gptPositive";
-import gpt from "./gpt/gpt";
+import genList from "./gpt/genList";
+import genSummary from "./gpt/genSummary";
 import yelpReview from "./webscraping/yelp/yelpReview";
 import airScrape from "./webscraping/airbnb/airScrape";
 import generalGPT from "./gpt/generalGPT";
 import targetReview from "./webscraping/target/targetReview";
 import bodyParser from "body-parser";
 import z from "zod";
+
+const List = z.object({
+  data: z.array(z.string().optional()).optional(),
+  error: z.string().optional(),
+});
 
 const app = express();
 const port = 3000;
@@ -65,7 +70,7 @@ app.get("/", async (req, res) => {
   res.status(200).send({ positive, negative, summary });
 });
 
-app.post("/amazon-points", async (req, res) => {
+app.post("/list/amazon", async (req, res) => {
   const {
     data,
   }: { data: { reviews: string[]; type: "positive" | "negative" } } = req.body;
@@ -77,36 +82,33 @@ app.post("/amazon-points", async (req, res) => {
     return;
   }
 
-  const bulletPoints = await generatePoints(data.reviews, data.type);
-  if (!bulletPoints) {
+  //this *should* be the shape of List define with Zod
+  const listStringified = await genList(data.reviews, data.type);
+  if (!listStringified) {
     res.status(500).send({ error: "server returned undefined" });
     return;
   }
 
-  const bulletPointsParsed = JSON.parse(bulletPoints);
+  const listParsed = JSON.parse(listStringified);
   try {
-    const test = GPTResponse.parse(bulletPointsParsed);
-    res.status(200).send({ data: test.data });
+    //checking if listParsed is in valid shape
+    const list = List.parse(listParsed);
+    res.status(200).send({ data: list.data });
   } catch (e) {
     res.status(500).send({ error: e });
   }
 });
 
-const GPTResponse = z.object({
-  data: z.array(z.string().optional()).optional(),
-  error: z.string().optional(),
-});
-
-app.post("/amazon-summary", async (req, res) => {
+app.post("/summary/amazon", async (req, res) => {
   const { positive, negative }: { positive: string[]; negative: string[] } =
     JSON.parse(req.body);
 
-  const summary = await gpt(positive, negative);
+  const summary = await genSummary(positive, negative);
 
   res.status(200).send(summary);
 });
 
-app.get("/amazon", async (req, res) => {
+app.get("/scrape/amazon", async (req, res) => {
   const { productUrl } = req.query;
 
   if (!productUrl) {
