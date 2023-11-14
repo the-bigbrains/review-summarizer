@@ -1,8 +1,13 @@
 const path = require("path");
 const HTMLPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin")
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+    watch: true,
+    watchOptions: {
+        ignored: ["**/node_modules", "**/dist"]
+
+    },
     entry: {
         index: "./src/index.tsx",
         inject: "./injection/index.tsx",
@@ -17,9 +22,13 @@ module.exports = {
                         loader: "ts-loader",
                         options: {
                             compilerOptions: { noEmit: false },
-                        }
-                    }],
-                exclude: /node_modules/,
+                        },
+                    },
+                ],
+                exclude: [
+                    path.resolve(__dirname, "node_modules/"),
+                    path.resolve(__dirname, "dist/"),
+                ]
             },
             {
                 test: /\.ts?$/,
@@ -28,19 +37,21 @@ module.exports = {
                         loader: "ts-loader",
                         options: {
                             compilerOptions: { noEmit: false },
-                        }
-                    }],
-                exclude: /node_modules/,
+                        },
+                    },
+                ],
+                exclude: [
+                    path.resolve(__dirname, "node_modules/"),
+                    path.resolve(__dirname, "dist/"),
+                ]
             },
             {
-                exclude: /node_modules/,
                 test: /\.css$/i,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    "postcss-loader"
+                use: ["style-loader", "css-loader", "postcss-loader"],
+                exclude: [
+                    path.resolve(__dirname, "node_modules/"),
+                    path.resolve(__dirname, "dist/"),
                 ]
-
             },
         ],
     },
