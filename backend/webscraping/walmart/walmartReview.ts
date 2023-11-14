@@ -23,6 +23,5 @@ export default async function walmartReview(url: string) {
 
   return reviewText;
 }
-const url =
-  "https://www.walmart.com/ip/Shark-AI-Ultra-Self-Empty-Robot-Vacuum-Bagless-60-Day-Capacity-Base-Precision-Home-Mapping-Perfect-for-Pet-Hair-Wi-Fi-AV2511AE/1883965277?athbdg=L1700";
-walmartReview(url).then((data) => console.log(data));
+
+//   "https://www.walmart.com/ip/Shark-AI-Ultra-Self-Empty-Robot-Vacuum-Bagless-60-Day-Capacity-Base-Precision-Home-Mapping-Perfect-for-Pet-Hair-Wi-Fi-AV2511AE/1883965277?athbdg=L1700";
