@@ -21,7 +21,10 @@ export default async function walmartReview(url: string) {
 
   await browser.close(); // close browser
 
-  return reviewText;
+  return {
+    positive: reviewText.map((review) => review.text),
+    negative: reviewText.map((review) => review.text),
+  };
 }
 
 /*
