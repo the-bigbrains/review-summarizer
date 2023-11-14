@@ -35,7 +35,7 @@ function App() {
         console.log("scraping");
 
         const response = await fetch(
-          `http://localhost:3000/scrape/?productUrl=${url}`
+          `http://localhost:3000/scrape?productUrl=${url}`
         );
         const result = (await response.json()) as {
           data: Awaited<ReturnType<typeof amazonScrape>>;
@@ -55,7 +55,7 @@ function App() {
           return;
         }
 
-        const response = await fetch(`http://localhost:3000/list/`, {
+        const response = await fetch(`http://localhost:3000/list`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

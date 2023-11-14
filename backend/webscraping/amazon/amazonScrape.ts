@@ -23,7 +23,7 @@ export default async function scrapeReviews(url: string) {
   }
 
   console.log("url before ", page.url());
-  await anchorElHandle?.click();
+  await anchorElHandle.click();
   await page.waitForNavigation();
   console.log("url after ", page.url());
 

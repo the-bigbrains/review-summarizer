@@ -4,9 +4,6 @@ import scrapeWalmartReviews from "./webscraping/walmart/walmartReview";
 import cors from "cors";
 import genList from "./gpt/genList";
 import genSummary from "./gpt/genSummary";
-import yelpReview from "./webscraping/yelp/yelpReview";
-import airScrape from "./webscraping/airbnb/airScrape";
-import generalGPT from "./gpt/generalGPT";
 import targetReview from "./webscraping/target/targetReview";
 import bodyParser from "body-parser";
 import z from "zod";
@@ -22,7 +19,7 @@ const port = 3000;
 app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
-app.post("/scrape", async (req, res) => {
+app.get("/scrape", async (req, res) => {
   const { productUrl } = req.query;
 
   if (!productUrl) {
@@ -37,16 +34,23 @@ app.post("/scrape", async (req, res) => {
     | { text: string }[]
     | { positive: string[]; negative: string[] }
     | undefined;
-  switch (site) {
-    case "walmart":
-      scrapeData = await scrapeWalmartReviews(productUrl.toString());
-      break;
-    case "target":
-      scrapeData = await targetReview(productUrl.toString());
-      break;
-    case "amazon":
-      scrapeData = await scrapeAmazonReviews(productUrl.toString());
-      break;
+  try {
+    switch (site) {
+      case "walmart":
+        scrapeData = await scrapeWalmartReviews(productUrl.toString());
+        break;
+      case "target":
+        scrapeData = await targetReview(productUrl.toString());
+        break;
+      case "amazon":
+        console.log("amazon case hit");
+
+        scrapeData = await scrapeAmazonReviews(productUrl.toString());
+        break;
+    }
+  } catch (e) {
+    res.status(500).send({ error: e });
+    return;
   }
 
   if (!scrapeData) {
@@ -63,6 +67,8 @@ type Data = {
 };
 
 app.post("/list", async (req, res) => {
+  console.log("list endpoint hit");
+
   const { data }: { data: Data } = req.body;
 
   if (!data || !data.reviews.length) {
@@ -90,6 +96,7 @@ app.post("/list", async (req, res) => {
 });
 
 app.post("/summary", async (req, res) => {
+  console.log("summary endpoint hit");
   const { positive, negative }: { positive: string[]; negative: string[] } =
     JSON.parse(req.body);
 
