@@ -7,6 +7,7 @@ import genSummary from "./gpt/genSummary";
 import targetReview from "./webscraping/target/targetReview";
 import bodyParser from "body-parser";
 import z from "zod";
+import yelpReview from "./webscraping/yelp/yelpReview";
 
 const List = z.object({
   data: z.array(z.string().optional()).optional(),
@@ -44,8 +45,10 @@ app.get("/scrape", async (req, res) => {
         break;
       case "amazon":
         console.log("amazon case hit");
-
         scrapeData = await scrapeAmazonReviews(productUrl.toString());
+        break;
+      case "yelp":
+        scrapeData = await yelpReview(productUrl.toString());
         break;
     }
   } catch (e) {

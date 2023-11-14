@@ -28,9 +28,15 @@ switch (site) {
     section = document.getElementsByClassName("item-review-section");
     break;
   case "target":
-    section = document.querySelector(
-      "h3[data-test='styles__StyledHeading-sc-1xmf98v-0 jhKFiw h-text-center h-padding-a-default h-margin-b-none']"
+    section = document.getElementsByClassName(
+      "styles__StyledHeading-sc-1xmf98v-0 jhKFiw h-text-center h-padding-a-default h-margin-b-none"
     );
+    for (let i = 0; i < section.length; i++) {
+      if (section[i].textContent === "Guest Ratings & Reviews") {
+        section = section[i];
+        break;
+      }
+    }
     break;
 }
 
