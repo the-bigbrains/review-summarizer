@@ -35,7 +35,7 @@ function App() {
         console.log("scraping");
 
         const response = await fetch(
-          `http://localhost:3000/scrape/amazon?productUrl=${url}`
+          `http://localhost:3000/scrape/?productUrl=${url}`
         );
         const result = (await response.json()) as {
           data: Awaited<ReturnType<typeof amazonScrape>>;
@@ -44,6 +44,7 @@ function App() {
         return result?.data;
       };
 
+      //fetches either positive or negative reviews and stores them in respective states. For websites that don't differentiate review types, we have GPT generate different types from the same raw data.
       const getList = async (
         rawData: string[],
         type: "positive" | "negative"
@@ -54,7 +55,7 @@ function App() {
           return;
         }
 
-        const response = await fetch(`http://localhost:3000/list/amazon`, {
+        const response = await fetch(`http://localhost:3000/list/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -100,7 +101,7 @@ function App() {
 
       await Promise.all([
         getList(reviews.positive, "positive"),
-        getList(reviews.positive, "negative"),
+        getList(reviews.negative, "negative"),
       ]);
     };
 

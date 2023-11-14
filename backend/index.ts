@@ -1,5 +1,6 @@
 import express from "express";
 import scrapeAmazonReviews from "./webscraping/amazon/amazonScrape";
+import scrapeWalmartReviews from "./webscraping/walmart/walmartReview";
 import cors from "cors";
 import genList from "./gpt/genList";
 import genSummary from "./gpt/genSummary";
@@ -21,9 +22,7 @@ const port = 3000;
 app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
-app.get("/", async (req, res) => {
-  console.log("request received");
-
+app.post("/scrape", async (req, res) => {
   const { productUrl } = req.query;
 
   if (!productUrl) {
@@ -31,53 +30,44 @@ app.get("/", async (req, res) => {
     return;
   }
 
-  let response: { text: string }[] = [];
+  //get just "amazon", "walmart", etc. from productURL
+  const site = productUrl.toString().split("/")[2].split(".")[1];
 
-  let positive: string[] = [];
-  let negative: string[] = [];
-  let summary: string | null = null;
-
-  console.log("getting reviews");
-  switch (true) {
-    case /amazon\.com/i.test(productUrl.toString()):
-      //REDOING
+  let scrapeData:
+    | { text: string }[]
+    | { positive: string[]; negative: string[] }
+    | undefined;
+  switch (site) {
+    case "walmart":
+      scrapeData = await scrapeWalmartReviews(productUrl.toString());
       break;
-    case /yelp\.com/i.test(productUrl.toString()):
-      console.log("yelp");
-      response = await yelpReview(productUrl.toString());
+    case "target":
+      scrapeData = await targetReview(productUrl.toString());
       break;
-    case /airbnb\.com/i.test(productUrl.toString()):
-      console.log("airbnb");
-      response = await airScrape(productUrl.toString());
-      break;
-    case /target\.com/i.test(productUrl.toString()):
-      console.log("target");
-      response = await targetReview(productUrl.toString());
-      break;
-    default:
-      console.log("default");
+    case "amazon":
+      scrapeData = await scrapeAmazonReviews(productUrl.toString());
       break;
   }
 
-  const yeet = await generalGPT(response.map((txt) => txt.text));
+  if (!scrapeData) {
+    res.status(500).send({ error: "tempResponse returned nothing" });
+    return;
+  }
 
-  console.log("yeet", yeet);
-
-  // ! send it to GPT pos
-
-  // ! return the final
-
-  res.status(200).send({ positive, negative, summary });
+  res.status(200).send({ data: scrapeData });
 });
 
-app.post("/list/amazon", async (req, res) => {
-  const {
-    data,
-  }: { data: { reviews: string[]; type: "positive" | "negative" } } = req.body;
+type Data = {
+  reviews: string[];
+  type: "positive" | "negative";
+};
+
+app.post("/list", async (req, res) => {
+  const { data }: { data: Data } = req.body;
 
   if (!data || !data.reviews.length) {
     res
-      .status(300)
+      .status(400)
       .send({ data: "request body empty" + JSON.stringify(data, null, 2) });
     return;
   }
@@ -99,31 +89,13 @@ app.post("/list/amazon", async (req, res) => {
   }
 });
 
-app.post("/summary/amazon", async (req, res) => {
+app.post("/summary", async (req, res) => {
   const { positive, negative }: { positive: string[]; negative: string[] } =
     JSON.parse(req.body);
 
   const summary = await genSummary(positive, negative);
 
   res.status(200).send(summary);
-});
-
-app.get("/scrape/amazon", async (req, res) => {
-  const { productUrl } = req.query;
-
-  if (!productUrl) {
-    res.send("empty productURL");
-    return;
-  }
-
-  const scrapeData = await scrapeAmazonReviews(productUrl.toString());
-
-  if (!scrapeData) {
-    res.status(500).send({ error: "tempResponse returned nothing" });
-    return;
-  }
-
-  res.status(200).send({ data: scrapeData });
 });
 
 app.listen(port, () => {
