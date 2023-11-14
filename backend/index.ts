@@ -20,6 +20,8 @@ app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
 app.get("/scrape", async (req, res) => {
+  console.log("scrape endpoint hit");
+
   const { productUrl } = req.query;
 
   if (!productUrl) {
@@ -29,6 +31,7 @@ app.get("/scrape", async (req, res) => {
 
   //get just "amazon", "walmart", etc. from productURL
   const site = productUrl.toString().split("/")[2].split(".")[1];
+  console.log("site:", site);
 
   let scrapeData:
     | { text: string }[]

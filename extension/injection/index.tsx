@@ -10,27 +10,19 @@ elem.className = "w-full px-5 flex justify-center items-center";
 
 console.log("site:", site);
 
-let section;
+let section: Element | HTMLCollection | null = null;
 switch (site) {
   case "amazon":
     section = document.getElementById("ask-btf_feature_div");
     break;
   case "yelp":
-    section = document.getElementsByClassName("css-13merx8");
-    for (let i = 0; i < section.length; i++) {
-      if (section[i].textContent === "Recommended Reviews") {
-        section = section[i];
-        break;
-      }
-    }
+    section = document.querySelector("css-13merx8");
     break;
   case "walmart":
-    section = document.getElementsByClassName("item-review-section");
+    section = document.querySelector(".item-review-section");
     break;
   case "target":
-    section = document.querySelector(
-      "h3[data-test='styles__StyledHeading-sc-1xmf98v-0 jhKFiw h-text-center h-padding-a-default h-margin-b-none']"
-    );
+    section;
     break;
 }
 
