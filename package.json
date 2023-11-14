@@ -2,7 +2,10 @@
   "name": "react-chrome-ext",
   "version": "0.1.0",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "backend": "cd backend && nodemon -r dotenv/config ./index.ts",
+    "ext": "cd extension && npm run dev"
+  },
   "author": "",
   "license": "ISC",
   "workspaces": [
@@ -13,6 +16,5 @@
   "devDependencies": {
     "@types/node": "^18",
     "typescript": "^5.2.2"
-  },
-  "dependencies": {}
+  }
 }
