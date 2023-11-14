@@ -7,6 +7,8 @@
         {
             "matches": [
                 "https://*.amazon.com/*",
+                "https://*.walmart.com/ip/*",
+                "https://*.target.com/p/*",
                 "https://*.yelp.com/*",
                 "https://*.tripadvisor.com/*",
                 "https://*.airbnb.com/*"

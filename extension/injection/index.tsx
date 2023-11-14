@@ -3,15 +3,19 @@ import App from "./App";
 
 const url = document.URL;
 
+const site = url.toString().split("/")[2].split(".")[1];
+
 const elem = document.createElement("div");
 elem.className = "w-full px-5 flex justify-center items-center";
 
+console.log("site:", site);
+
 let section;
-switch (true) {
-  case /amazon\.com/i.test(url.toString()):
+switch (site) {
+  case "amazon":
     section = document.getElementById("ask-btf_feature_div");
     break;
-  case /yelp\.com/i.test(url.toString()):
+  case "yelp":
     section = document.getElementsByClassName("css-13merx8");
     for (let i = 0; i < section.length; i++) {
       if (section[i].textContent === "Recommended Reviews") {
@@ -20,11 +24,17 @@ switch (true) {
       }
     }
     break;
-  default:
+  case "walmart":
+    section = document.getElementsByClassName("item-review-section");
+    break;
+  case "target":
+    section = document.querySelector(
+      "h3[data-test='styles__StyledHeading-sc-1xmf98v-0 jhKFiw h-text-center h-padding-a-default h-margin-b-none']"
+    );
     break;
 }
 
-console.log(section);
+console.log("section:", section);
 
 if (section instanceof HTMLElement) {
   section.appendChild(elem);
