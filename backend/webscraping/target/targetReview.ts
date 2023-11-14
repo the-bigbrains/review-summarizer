@@ -13,12 +13,15 @@ export default async function targetReview(url: string) {
     'div[data-test="review-card--text"]',
     (elements) => {
       return elements.map((element) => {
-        return { text: element.textContent || '' } as { text: string }; // Use type assertion to ensure non-null string
+        return { text: element.textContent || "" } as { text: string }; // Use type assertion to ensure non-null string
       });
     }
   );
 
   await browser.close(); // close browser
 
-  return reviewText;
+  return {
+    positive: reviewText.map((text) => text.text),
+    negative: reviewText.map((text) => text.text),
+  };
 }
