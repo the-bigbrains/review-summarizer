@@ -1,34 +1,20 @@
+from typing import List
 import semantic_kernel as sk
 from semantic_kernel.connectors.ai import ChatRequestSettings, CompleteRequestSettings
 
 from kernel import kernel
 
 
-async def generateList():
+async def generateList(reviews: List[str], type: str):
 
-    #     prompt = """
-    # Given an array of reviews for a product, generate a JSON array of bullet points summarizing the {{$type}} and ONLY the {{$type}} aspects of the product based on the reviews. Consider factors like product features, quality, and user experiences. The output should be less than 15 words while being concise, clear and informative.
-    # Reviews: {{$review}}"""
-
-    prompt = """Bot: How can I help you?
-User: {{$input}}
-
----------------------------------------------
-
-The intent of the user in 5 words or less: """
+    prompt = """Given an array of reviews for a product, generate a comma separated array of summaries less than 15 words long summarizing the {{$type}} and ONLY the {{$type}} aspects of the product based on the reviews. Consider factors like product features, quality, and user experiences. The output should be short, concise, clear and informative.
+    Reviews: {{$reviews}}"""
 
     prompt_config = sk.PromptTemplateConfig(
-        description="Gets the intent of the user.",
+        description=f"Get an array of points summarizing the product's ${type} and ONLY the ${type} aspects of the product based on the reviews.",
         type="completion",
         completion=sk.PromptTemplateConfig.CompletionConfig(
             0.0, 0.0, 0.0, 0.0, 500),
-        input=sk.PromptTemplateConfig.InputConfig(
-            parameters=[
-                sk.PromptTemplateConfig.InputParameter(
-                    name="input", description="The user's request.", default_value=""
-                )
-            ]
-        ),
     )
 
     # Create the SemanticFunctionConfig object
@@ -42,10 +28,15 @@ The intent of the user in 5 words or less: """
         function_config=function_config,
     )
 
+    context = sk.ContextVariables()
+    context["reviews"] = str(reviews)
+    context["type"] = type
+
     result = await kernel.run_async(
         get_intent,
-        input_str="I want to send an email to the marketing team celebrating their recent milestone.",
+        input_vars=context
     )
 
-    print(result)
-    return result
+    listStringified: str = result.dict()['variables']['variables']['input']
+
+    return listStringified.split(", ")

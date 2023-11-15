@@ -1,4 +1,7 @@
+import json
+from typing import Dict, List
 from flask import Flask, request
+from semantic_kernel import SKContext
 from generateList import generateList
 from flask import jsonify
 
@@ -64,11 +67,11 @@ async def list():
 
     dataStringified = request.args.get('data')
 
-    # if (not dataStringified): return "No data provided"
-    # if (dataStringified):
-    #     data: Dict[str, List[str]] = json.loads(dataStringified)
-    # else:
-    #     data = scrapeData
+    if (dataStringified):
+        data: Dict[str, List[str]] = json.loads(dataStringified)
+    else:
+        data = scrapeData
 
-    listStringified = await generateList()
-    return listStringified.json()
+    res = await generateList(data['positive'], 'positive')
+
+    return res

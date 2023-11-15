@@ -5,7 +5,7 @@
   "scripts": {
     "backend": "cd backend && nodemon -r dotenv/config ./index.ts",
     "ext": "cd extension && npm run dev",
-    "py": "python -m flask --app ./py-server/app.py run --port=3000 --debug"
+    "py": "python -m flask --app ./py-server/app.py run --port=4000 --debug"
   },
   "author": "",
   "license": "ISC",
