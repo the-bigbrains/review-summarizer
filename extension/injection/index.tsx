@@ -16,7 +16,13 @@ switch (site) {
     section = document.getElementById("ask-btf_feature_div");
     break;
   case "yelp":
-    section = document.querySelector("css-13merx8");
+    section = document.getElementsByClassName("css-13merx8");
+    for (let i = 0; i < section.length; i++) {
+      if (section[i].textContent === "Recommended Reviews") {
+        section = section[i];
+        break;
+      }
+    }
     break;
   case "walmart":
     section = document.querySelector(".item-review-section");
