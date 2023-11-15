@@ -58,7 +58,7 @@ export default async function scrapeReviews(url: string) {
     reviewArrayResolved.push(review);
   }
 
-  await browser.close(); // close browser
+  await browser.close();
   console.log("browser closed");
 
   return {

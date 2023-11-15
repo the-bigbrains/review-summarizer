@@ -1,28 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../src/App.css";
 import Modal from "./Modal";
 import amazonScrape from "../../backend/webscraping/amazon/amazonScrape";
-
-interface RawReview {
-  negative:
-    | string[]
-    | {
-        pros: string[];
-      }[];
-  positive:
-    | string[]
-    | {
-        pros: string[];
-      }[];
-  summary: string | null;
-}
-
-interface SanitizedReview {
-  positive: { pros: string[] };
-  negative: { cons: string[] };
-  summary: string | null;
-}
 
 function App() {
   const [pros, setPros] = useState<string[]>([]);
