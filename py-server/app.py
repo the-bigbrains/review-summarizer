@@ -1,3 +1,4 @@
+from posReviewList import scrapeData
 from typing import List
 from flask import Flask, request
 from generateList import generateList
@@ -20,6 +21,8 @@ def scrape():
     print("scrape endpoint hit")
 
     productUrl = request.args.get('productUrl')
+    if (not productUrl):
+        return {"data": "Product URL is required!"}
 
     site = productUrl.split('/')[2].split('.')[1] if productUrl else None
     print("site:", site)
@@ -31,7 +34,7 @@ def scrape():
     # elif site == "target":
     #     scrapeTarget(productUrl)
 
-    return jsonify({"message": "Scraping completed successfully!"})
+    return {"data": "Scraping completed successfully!"}
 
 
 @app.route("/list", methods=['POST', 'GET'])
@@ -45,5 +48,13 @@ async def list():
         return {"data": []}
 
     res = await generateList(data, reviewType)
+
+    return {"data": res}
+
+
+@app.route("/test", methods=['GET'])
+async def test():
+
+    res = await generateList(scrapeData, "positive")
 
     return {"data": res}
