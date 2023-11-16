@@ -6,4 +6,4 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mypackage"
 version = "0.0.1"
-dependencies = ["load_dotenv", "semantic_kernel", "flask"]
+dependencies = ["load_dotenv", "semantic_kernel", "flask", "flask-cors"]
