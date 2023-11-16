@@ -26,21 +26,21 @@ function App() {
 
       //fetches either positive or negative reviews and stores them in respective states. For websites that don't differentiate review types, we have GPT generate different types from the same raw data.
       const getList = async (
-        rawData: string[],
+        reviews: string[],
         type: "positive" | "negative"
       ) => {
         console.log(`requesting ${type} reviews summary`);
-        if (!rawData.length) {
+        if (!reviews.length) {
           console.log("rawData is an empty array");
           return;
         }
 
-        const response = await fetch(`http://localhost:3000/list`, {
+        const response = await fetch(`http://localhost:4000/list`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data: { reviews: rawData, type } }),
+          body: JSON.stringify({ data: { reviews, type } }),
         });
         const data = (await response.json()) as {
           data?: string[];
