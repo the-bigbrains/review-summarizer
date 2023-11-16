@@ -1,0 +1,5 @@
+Given the following product review, generate an array of summaries describing the {{$type}} and ONLY the {{$type}} aspect. There should be no more than 3, with each summary being an excerpt from the original review. Include unique aspect of the product's features, quality, and user experiences. The output should be short, concise, clear and informative.
+
+Review: {{$reviews}}
+
+Result: [ ]//FILL THIS

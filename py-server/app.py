@@ -1,9 +1,9 @@
 from posReviewList import scrapeData
 from typing import List
 from flask import Flask, request
-from generateList import generateList
 from flask import jsonify
 from flask_cors import CORS
+from genList import generateList
 
 app = Flask(__name__)
 
