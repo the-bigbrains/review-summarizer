@@ -1,0 +1,6 @@
+Given an array of reviews for a product, generate a javascript array of summaries less than 15 words long describing the {{$type}} and ONLY the {{$type}} aspects based on the reviews. Consider factors like product features, quality, and user experiences. The output should be short, concise, clear and informative.
+Reviews: {{$reviews}}
+
+Output: [
+  
+]
