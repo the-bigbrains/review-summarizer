@@ -76,6 +76,7 @@ function App() {
       const reviews = await getScrapeData(window.location.href);
       if (!reviews) {
         console.log("reviews are empty");
+        console.error("reviews are empty: ", reviews, "url: ", window.location);
         return;
       }
 

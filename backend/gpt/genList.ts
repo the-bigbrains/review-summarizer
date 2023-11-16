@@ -15,7 +15,7 @@ export default async function generatePoints(
     functions: [
       {
         name: "summarizePos",
-        description: `Given an array of reviews for a product, generate a list of bullet points summarizing ONLY the ${type} aspects of the product based on the reviews. Consider factors like product features, quality, and user experiences. The output should be less than 15 words while being concise, clear and informative.`,
+        description: `Given an array of reviews for a product, generate a list of bullet points summarizing ONLY the ${type} aspects of the product based on the reviews. Consider factors like product features, quality, and user experiences. The output should be less than 25 words while being concise, clear and informative.`,
         parameters: {
           type: "object",
           properties: {

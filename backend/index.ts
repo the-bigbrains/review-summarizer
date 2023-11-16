@@ -62,7 +62,7 @@ app.get("/scrape", async (req, res) => {
   if (!scrapeData) {
     res.status(500).send({ error: "tempResponse returned nothing" });
     return;
-  }
+  } else console.log("Scrape is succesful");
 
   res.status(200).send({ data: scrapeData });
 });

@@ -25,7 +25,7 @@ switch (site) {
     }
     break;
   case "walmart":
-    section = document.querySelector(".item-review-section");
+    section = document.getElementsByClassName("f2 dib lh-title ma0 dark-gray");
     break;
   case "target":
     section = document.getElementsByClassName(
