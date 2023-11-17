@@ -72,6 +72,7 @@ type Data = {
   type: "positive" | "negative";
 };
 
+//THIS ENDPOINT IS REPLACED BY PYTHON
 app.post("/list", async (req, res) => {
   console.log("list endpoint hit");
 
