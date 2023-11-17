@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "type": "completion",
+  "description": "Get an array of points summarizing the product based on the reviews.",
+  "completion": {
+    "temperature": 0.0,
+    "top_p": 0.0,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0
+  },
+  "input": {
+    "parameters": [
+      {
+        "name": "reviews",
+        "description": "The reviews to summarize.",
+        "defaultValue": ""
+      }
+    ]
+  }
+}
