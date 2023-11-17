@@ -84,8 +84,13 @@ app.post("/list", async (req, res) => {
     return;
   }
 
+  let filteredReviews = data.reviews.filter((review) => {
+    const wordCount = review.split(" ").length;
+    wordCount >= 30;
+  });
+
   //this *should* be the shape of List define with Zod
-  const listStringified = await genList(data.reviews, data.type);
+  const listStringified = await genList(filteredReviews, data.type);
   if (!listStringified) {
     res.status(500).send({ error: "server returned undefined" });
     return;
