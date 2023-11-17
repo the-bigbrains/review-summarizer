@@ -1,10 +1,5 @@
 import puppeteer from "puppeteer";
 
-interface Review {
-  positive: string[];
-  negative: string[];
-}
-
 export default async function scrapeReviews(url: string) {
   const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
@@ -16,87 +11,87 @@ export default async function scrapeReviews(url: string) {
   );
 
   await page.goto(url);
-  const linkSelector = 'a[data-hook="see-all-reviews-link-foot"]';
-  const anchorElHandle = await page.waitForSelector(linkSelector);
 
-  if (!anchorElHandle) {
+  const allReviewsSelector = 'a[data-hook="see-all-reviews-link-foot"]';
+  const allReviews = await page.waitForSelector(allReviewsSelector); //wait for the see all reviews button to load
+  if (!allReviews) {
     console.log("anchorElHandle not found");
     return;
   }
-
-  await anchorElHandle.click();
+  await allReviews.click();
   await page.waitForNavigation();
-
-  const reviewSelectorArray = ["lf", "rg"];
-  const reviewArrayResolved: string[][] = [];
+  console.log("clicked see all reviews");
 
   // This function will be called on each page, it selects all reviews and returns them in an array
-  async function getReviews(): Promise<string[]> {
-    const reviewElements = await page.$$(
-      'div[class="a-row a-spacing-small review-data"]'
-    );
-
-    const reviews = await Promise.all(
-      reviewElements.map(async (element) => {
-        const reviewText = await page.evaluate(
-          (el) => el.textContent?.trim() ?? "",
-          element
+  async function getReviewComments() {
+    await page.waitForSelector(
+      'div[class="a-section a-spacing-none review-views celwidget"]'
+    ); // Wait for the reviews to load
+    const reviewComments = await page.$$eval(
+      'span[data-hook="review-body"]',
+      (commentElements) => {
+        return commentElements.map((element) =>
+          element.textContent?.trim().replace(/\n/g, "")
         );
-        return reviewText.replace(/\n/g, "");
-      })
+      }
     );
-
-    return reviews;
+    return reviewComments;
   }
 
-  for (const selector of reviewSelectorArray) {
-    console.log("selector:", selector);
-    //loop through the positive and negative reviews
-    const linkSelector = `a[data-reftag="cm_cr_arp_d_viewpnt_${selector}t"]`;
-    const anchorElHandle = await page.waitForSelector(linkSelector);
-
-    if (!anchorElHandle) {
-      //if the element is not found, exit the loop
-      console.log("anchorElHandle not found");
-      return;
-    }
-
-    anchorElHandle.click(); //click on the positive or negative reviews
-    await page.waitForNavigation();
-
-    const reviews: string[] = [];
+  async function reviewComments() {
+    const allReviews: string[] = [];
 
     try {
-      // Loop through 3 pages
-      console.log("Looping through pages");
-      for (let i = 0; i < 3; i++) {
-        console.log("i:", i)
-        const currentReviews = await getReviews(); // Get reviews from the current page
-        console.log("After getReviews")
-        console.log("currentReviews:", currentReviews);
-        if (!currentReviews.length) {
-          console.log("No reviews found on page", i + 1);
-          break; // No more reviews, exit the loop
-        }
-        reviews.push(...currentReviews);
+      const currentReviews = await getReviewComments();
+      console.log("Current Reviews:", currentReviews);
 
-        const nextPageButton = '.a-pagination > .a-last > a'; // Selector for the next page button
-        const nextPageButtonElement = await page.$(nextPageButton);
-        console.log("nextPageButtonElement:", nextPageButtonElement);
-        if (!nextPageButtonElement) {
-          console.log("Next page button not found");
-          break; // No next page button found, exit the loop
-        }
-
-        console.log("Before nextPageButtonElement.click()")
-        await nextPageButtonElement.click(); // Click on the next page button
-        console.log("After waitForNavigation")
+      if (currentReviews.length === 0) {
+        console.log("No reviews found on page");
+        return allReviews;
       }
+
+      allReviews.push(...(currentReviews as string[]));
+
+      /*const nextPageButton = ".a-last > a"; // Selector for the next page button
+      await page.waitForSelector(nextPageButton);
+      const nextPageButtonExist = await page.$(nextPageButton); // Check if next page button exists
+      if (!nextPageButtonExist) {
+        console.log("No more pages");
+        return allReviews;
+      }
+
+      page.click(nextPageButton);
+      await page.waitForNavigation();
+      console.log("clicked next page");*/
     } catch (error) {
       console.error("Error:", error);
     }
 
-    reviewArrayResolved.push(reviews);
+    return allReviews;
+  }
+
+  const reviewSelectorArray = ["rg", "lf"];
+  const reviewArrayResolved: string[][] = [];
+
+  for (const selector of reviewSelectorArray) {
+    //loop through the positive and negative reviews
+    const reviewSelector = `a[data-reftag="cm_cr_arp_d_viewpnt_${selector}t"]`;
+    const reviewHandle = await page.waitForSelector(reviewSelector); //wait for the positive or negative reviews button to load
+    if (!reviewHandle) {
+      console.log("anchorElHandle not found");
+      return;
+    }
+
+    try {
+      await reviewHandle.click(); //click on the positive or negative reviews
+      await page.waitForNavigation();
+      console.log("clicked reviews");
+
+      const comments = await reviewComments();
+      reviewArrayResolved.push(comments); // Fix: Push the comments array into reviewArrayResolved
+    } catch (error) {
+      console.log("error:", error);
+    }
   }
 
   console.log("All reviews:", reviewArrayResolved);
