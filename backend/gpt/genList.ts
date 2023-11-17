@@ -4,6 +4,8 @@ export default async function generatePoints(
   review: string[],
   type: "positive" | "negative"
 ) {
+  let listType = type === "positive" ? "pros" : "cons";
+
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -21,8 +23,7 @@ export default async function generatePoints(
           properties: {
             data: {
               type: "array",
-              description:
-                "Array of summarized pros of the product based on the reviews",
+              description: `Array of summarized ${listType} of the product based on the reviews`,
               items: {
                 type: "string",
               },
