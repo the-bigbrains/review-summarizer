@@ -1,5 +1,5 @@
-Given the following product review, generate summaries describing the {{$type}} and ONLY the {{$type}} aspect. There should be no more than 3 summary, with each being an excerpt from the original review. Include unique aspect of the product's features, quality, and user experiences. Each summary should be less than 10 words, concise, clear and informative.
+Given the following product review, generate summaries describing the {{$type}} and ONLY the {{$type}} aspect. There should be 3 or less summaries, with each being an excerpt from the original review. Include unique aspect of the product's features, quality, and user experiences. Each summary should be less than 10 words, concise, clear and informative.
 
-Response ONLY with sentences separated by a newline character. If this review has no {{$type}} aspect, respond only with "NULL" 
+Response ONLY with sentences separated by a newline character. If the following review includes no {{$type}} aspect, respond only with "NULL" 
 
 Review: {{$reviews}}
