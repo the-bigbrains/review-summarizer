@@ -4,6 +4,7 @@ from kernel import kernel
 import semantic_kernel as sk
 import os
 import asyncio
+import re
 
 
 async def generateList(reviews: List[str], type: str):
@@ -13,32 +14,35 @@ async def generateList(reviews: List[str], type: str):
     plugin = kernel.import_semantic_skill_from_directory(
         pluginDir, "SomePlugin")
 
-    unresolvedResults = []
-
     print("reviews:", reviews)
 
-    for item in reviews:
+    unresolvedResults: List[Coroutine[Any, Any, sk.SKContext[Any]]] = []
+    # generate promises for reach review
+    for review in reviews:
         context = sk.ContextVariables()
-        context["reviews"] = item
+        context["reviews"] = review
         context["type"] = type
-        print("context:", context["reviews"])
-        # test = await kernel.run_async(plugin["Summarize"], input_vars=context)
         unresolvedResults.append(kernel.run_async(
             plugin["Summarize"], input_vars=context))
 
-    print("gathering...")
-    # results = await asyncio.gather(*unresolvedResults)
-    results = unresolvedResults
+    print("resolving...")
+    # resolve promises in parallel
+    summarizeResults: List[sk.SKContext[Any]] = await asyncio.gather(*unresolvedResults)
 
-    restinpeach = [item.dict()["variables"]["variables"]["input"]
-                   for item in results]
+    # sanitize items and flatten array
+    summaryArray = [summary for Summaries in summarizeResults for summary in re.split('[;\n]', Summaries.dict(
+    )["variables"]["variables"]["input"].replace("- ", ""))]
 
-    print("resultStringified:", restinpeach)
+    print("result:", summaryArray)
 
-    newContext = sk.ContextVariables()
-    newContext["reviews"] = str(restinpeach)
-    yeet = await kernel.run_async(plugin["GenListNew"], input_vars=newContext)
-    print("yeet:", yeet.dict())
-    print("yeet input:", yeet.dict()["variables"]["variables"]["input"])
+    genListContext = sk.ContextVariables()
+    genListContext["reviews"] = str(summaryArray)
 
-    return yeet.dict()["variables"]["variables"]["input"]
+    # generate a filtered list of summary
+    genListNewResult = await kernel.run_async(plugin["GenListNew"], input_vars=genListContext)
+
+    print("genListResult:", genListNewResult.dict()
+          ["variables"]["variables"]["input"])
+
+    # return just the filtered summary list
+    return genListNewResult.dict()["variables"]["variables"]["input"]
