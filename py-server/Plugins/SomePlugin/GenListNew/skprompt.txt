@@ -2,13 +2,13 @@ Given an array of reviews for a product, filter out all repetitive, low quality 
 
 Respond ONLY with a JSON object with the following format:
 
-Result: {
+{
   //filtered reviews
-  reviews: [],
+  reviews: ["review1", "review2", "review3"],
   //index of included reviews
-  included: [],
+  included: [0,3,5],
   //index of excluded reviews
-  excluded: []
+  excluded: [1,2,4,6]
 }
 
 Reviews: {{$reviews}}
