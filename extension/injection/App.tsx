@@ -4,10 +4,15 @@ import "../src/App.css";
 import Modal from "./Modal";
 import amazonScrape from "../../backend/webscraping/amazon/amazonScrape";
 
+interface Summary {
+  reviews: string[];
+  included: number[];
+  excluded: number[];
+}
+
 function App() {
-  const [pros, setPros] = useState<string[]>([]);
-  const [cons, setCons] = useState<string[]>([]);
-  const [summary, setSummary] = useState();
+  const [pros, setPros] = useState<Summary>();
+  const [cons, setCons] = useState<Summary>();
 
   useEffect(() => {
     const init = async () => {
@@ -43,34 +48,16 @@ function App() {
           body: JSON.stringify({ data: { reviews, type } }),
         });
         const data = (await response.json()) as {
-          data?: string[];
+          data?: Summary;
           error?: string;
         };
         console.log("result:", data);
 
         if (type === "positive") {
-          setPros(data.data || []);
+          setPros(data.data);
         } else {
-          setCons(data.data || []);
+          setCons(data.data);
         }
-      };
-
-      const getSummary = async (
-        positiveReview: string[],
-        negativeReview: string[]
-      ) => {
-        const response = await fetch(`http://localhost:3000/amazon-summary`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            positive: positiveReview,
-            negative: negativeReview,
-          }),
-        });
-
-        const data = await response.json();
       };
 
       const reviews = await getScrapeData(window.location.href);
@@ -100,35 +87,16 @@ function App() {
         />
       </div>
 
-      <div className="grid items-start w-full grid-cols-3 justify-center p-3 gap-x-3">
+      <div className="grid items-start w-full grid-cols-2 justify-center p-3 gap-x-3">
         <List yeet={pros} pos={true} />
         <List yeet={cons} pos={false} />
-
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl text-black">Summary</h1>
-          {summary ? (
-            <p className="text-md ">{summary}</p>
-          ) : (
-            <>
-              {Array(3)
-                .fill(0)
-                .map((_, i) => (
-                  <p
-                    className="w-full h-6 animate-pulse bg-zinc-400"
-                    key={i}
-                  ></p>
-                ))}
-              <p className="w-2/3 h-6 animate-pulse bg-zinc-400"></p>
-            </>
-          )}
-        </div>
       </div>
     </Modal>
   );
 }
 
 interface ListProps {
-  yeet: string[];
+  yeet?: Summary;
   pos: boolean;
 }
 
@@ -136,9 +104,9 @@ const List = (props: ListProps) => {
   return (
     <div className="flex flex-col justify-center gap-y-2">
       <h1 className="text-3xl text-black">{props.pos ? "Pros" : "Cons"}</h1>
-      <ul className="text-blak flex flex-col gap-y-2">
-        {props.yeet.length
-          ? props.yeet.map((review, i) => (
+      <ul className="flex flex-col gap-y-2  font-normal text-base">
+        {props.yeet
+          ? props.yeet.reviews.map((review, i) => (
               <li className="text-start flex gap-x-2 items-start" key={i}>
                 {props.pos ? (
                   <Icon icon="fluent-emoji-flat:thumbs-up" height={20} />
