@@ -9,13 +9,13 @@ export default async function walmartReview(url: string) {
 
   console.log("opened browser and page");
   try {
-    await page.waitForSelector('div[class="w_HmLO"]');
+    await page.waitForSelector("span.tl-m.mb3.db-m");
   } catch (e) {
     console.log(e);
   }
   console.log("waited for selector");
 
-  const reviewText = await page.$$eval("div.w_HmLO", (elements) => {
+  const reviewText = await page.$$eval("span.tl-m.mb3.db-m", (elements) => {
     return elements.map((element) => {
       return { text: element.textContent?.trim() || "" };
     });

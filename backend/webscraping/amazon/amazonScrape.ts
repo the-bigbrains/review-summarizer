@@ -70,7 +70,7 @@ export default async function scrapeReviews(url: string) {
     return allReviews;
   }
 
-  const reviewSelectorArray = ["rg", "lf"];
+  const reviewSelectorArray = ["lf", "rg"];
   const reviewArrayResolved: string[][] = [];
 
   for (const selector of reviewSelectorArray) {
