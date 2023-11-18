@@ -1,22 +1,15 @@
 from posReviewList import scrapeData
 from typing import List
 from flask import Flask, request
-from flask import jsonify
 from flask_cors import CORS
-from genList import generateList
-import ast
+from generateSummaries import generateSummaries
 
 app = Flask(__name__)
 
 CORS(app)
 
 
-@app.route('/', methods=['GET'])
-def index():
-    args = request.args
-    return args
-
-
+# NOT IN USE
 @app.route("/scrape", methods=['GET'])
 def scrape():
     print("scrape endpoint hit")
@@ -45,15 +38,11 @@ async def list():
     data: List[str] = request.get_json()['data']['reviews']
     reviewType = request.get_json()['data']['type']
 
-    # these are for
-    # data = scrapeData
-    # reviewType = "positive"
-
     if (not data):
         return {"data": []}
 
-    res = await generateList(data, reviewType)
-    print("list response:", res)
+    res = await generateSummaries(data, reviewType)
+    print("generateSummaries response:", res)
 
     return {"data": res}
 
@@ -61,6 +50,6 @@ async def list():
 @app.route("/test", methods=['GET'])
 async def test():
 
-    res = await generateList(scrapeData, "positive")
+    res = await generateSummaries(scrapeData, "positive")
 
     return {"data": res}

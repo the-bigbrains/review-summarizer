@@ -8,7 +8,11 @@ export default async function walmartReview(url: string) {
   });
 
   console.log("opened browser and page");
-  await page.waitForSelector('div[class="w_HmLO"]');
+  try {
+    await page.waitForSelector('div[class="w_HmLO"]');
+  } catch (e) {
+    console.log(e);
+  }
   console.log("waited for selector");
 
   const reviewText = await page.$$eval("div.w_HmLO", (elements) => {

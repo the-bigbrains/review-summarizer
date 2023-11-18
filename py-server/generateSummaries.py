@@ -1,14 +1,12 @@
-import ast
 from typing import Any, Coroutine, List
 from kernel import kernel
 import semantic_kernel as sk
 import os
 import asyncio
-import re
 
 
-async def generateList(reviews: List[str], type: str):
-    print("genList start")
+async def generateSummaries(reviews: List[str], type: str):
+    print("gen summary start")
 
     pluginDir = os.path.join(__file__, "../Plugins")
     plugin = kernel.import_semantic_skill_from_directory(
@@ -17,7 +15,7 @@ async def generateList(reviews: List[str], type: str):
     print("reviews:", reviews)
 
     unresolvedResults: List[Coroutine[Any, Any, sk.SKContext[Any]]] = []
-    # generate promises for reach review
+    # generate promises for each review
     for review in reviews:
         context = sk.ContextVariables()
         context["reviews"] = review
@@ -33,17 +31,17 @@ async def generateList(reviews: List[str], type: str):
     summaryArray = [{"summary": summary, "index": index} for index, Summaries in enumerate(summarizeResults) for summary in Summaries.dict(
     )["variables"]["variables"]["input"].replace("- ", "").split("\n")]
 
-    print("result:", summaryArray)
+    print("summary result:", summaryArray)
 
-    genListContext = sk.ContextVariables()
-    genListContext["reviews"] = str(summaryArray)
+    filterContext = sk.ContextVariables()
+    filterContext["reviews"] = str(summaryArray)
 
     # generate a filtered list of summary
-    genListNewResult = await kernel.run_async(plugin["GenListNew"], input_vars=genListContext)
+    filterResult = await kernel.run_async(plugin["Filter"], input_vars=filterContext)
 
-    print("genListResult:", genListNewResult.dict()
+    print("filter result:", filterResult.dict()
           ["variables"]["variables"]["input"])
-    filteredSummaries = genListNewResult.dict(
+    filteredSummaries = filterResult.dict(
     )["variables"]["variables"]["input"].split("\n")
 
     return {"all": summaryArray, "filtered": filteredSummaries}

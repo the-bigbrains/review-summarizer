@@ -1,29 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { Icon } from "@iconify/react";
 import "../src/App.css";
-import Modal from "./Modal";
+import Modal from "./comp/Modal";
 import amazonScrape from "../../backend/webscraping/amazon/amazonScrape";
-import HoverModal from "./HoverModal";
-
-interface Summary {
-  all: {
-    summary: string;
-    index: number;
-  }[];
-  filtered: string[];
-}
-
-const findReviewIndex = (
-  summaries: { summary: string; index: number }[],
-  target: string
-) => {
-  for (let i = 0; i < summaries.length; i++) {
-    if (summaries[i].summary === target) {
-      return summaries[i].index;
-    }
-  }
-  return -1;
-};
+import { Summary } from "./util";
+import List from "./comp/List";
 
 function App() {
   const [pros, setPros] = useState<Summary>();
@@ -107,7 +87,7 @@ function App() {
         />
       </div>
 
-      <div className="grid items-start w-full grid-cols-2 justify-center p-3 gap-x-3">
+      <div className="grid items-start w-full grid-cols-2 p-3 gap-x-3">
         <List summary={pros} raw={rawData?.positive} pos={true} />
         {/* <List
           summary={{ reviews: ["pos1", "pos2"], included: [0, 1] }}
@@ -119,92 +99,5 @@ function App() {
     </Modal>
   );
 }
-
-interface ListProps {
-  summary?: Summary;
-  raw?: string[];
-  pos: boolean;
-}
-
-const List = (props: ListProps) => {
-  const [hovered, setHovered] = useState(false);
-  const [hoverPos, setHoverPos] = useState({ x: 0, y: 0 });
-  const [hoverIndex, setHoverIndex] = useState(-1);
-  const listRef = useRef<HTMLDivElement>(null);
-
-  const onHover = (
-    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    i: number
-  ) => {
-    setHoverIndex(i);
-    setHovered(true);
-
-    //pointOffsets is sometimes undefined if it's outside
-    const listOffsets = listRef.current?.getBoundingClientRect();
-    if (!listOffsets) {
-      console.error;
-      `pointOffsets is undefined. pointRef is: ${listRef.current}`;
-      return;
-    }
-    console.log("pointOffsets:", listOffsets);
-
-    const mouseOffsets = e.currentTarget.getBoundingClientRect();
-    console.log("mouseOffsets:", mouseOffsets);
-
-    const final = {
-      x: mouseOffsets.left,
-      y: mouseOffsets.height + 100,
-    };
-    console.log("final", final);
-
-    setHoverPos(final);
-  };
-
-  return (
-    <div className="flex flex-col justify-center gap-y-2" ref={listRef}>
-      {/**the name is hover modal, but right now it's click to open */}
-      <HoverModal
-        visible={hovered}
-        pos={hoverPos}
-        raw={props.raw && props.raw[hoverIndex]}
-        close={() => {
-          setHoverIndex(-1);
-          setHovered(false);
-        }}
-      />
-      <h1 className="text-3xl text-black">{props.pos ? "Pros" : "Cons"}</h1>
-      <ul className="flex flex-col gap-y-2  font-normal text-base">
-        {props.summary
-          ? props.summary.filtered.map((review, i) => (
-              <li
-                className="text-start flex gap-x-2 items-start"
-                key={i}
-                onClick={(e) => {
-                  const index = findReviewIndex(props.summary!.all, review);
-                  console.log("index:", index);
-
-                  onHover(e, index);
-                }}
-              >
-                {props.pos ? (
-                  <Icon icon="fluent-emoji-flat:thumbs-up" height={20} />
-                ) : (
-                  <Icon icon="fluent-emoji-flat:thumbs-down" height={20} />
-                )}
-                {review}
-              </li>
-            ))
-          : Array(5)
-              .fill(0)
-              .map((_, i) => (
-                <div
-                  className="w-full h-6 animate-pulse bg-zinc-400"
-                  key={i}
-                ></div>
-              ))}
-      </ul>
-    </div>
-  );
-};
 
 export default App;

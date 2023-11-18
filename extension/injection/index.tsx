@@ -3,15 +3,13 @@ import App from "./App";
 
 const url = document.URL;
 
-const site = url.toString().split("/")[2].split(".")[1];
-
-const elem = document.createElement("div");
-elem.className = "w-full px-5 flex justify-center items-center";
-
-console.log("site:", site);
+const app = document.createElement("div");
+app.className = "w-full px-5 flex justify-center items-center";
 
 const onLoad = () => {
   console.log("site loaded!");
+
+  const site = url.toString().split("/")[2].split(".")[1];
 
   let section: Element | HTMLCollection | null = null;
   switch (site) {
@@ -19,11 +17,12 @@ const onLoad = () => {
       section = document.getElementById("ask-btf_feature_div");
 
       if (section instanceof HTMLElement) {
-        section.appendChild(elem);
+        section.appendChild(app);
       } else if (section instanceof HTMLCollection) {
-        section[0].appendChild(elem);
+        section[0].appendChild(app);
       }
       break;
+
     case "yelp":
       section = document.getElementsByClassName("css-13merx8");
       for (let i = 0; i < section.length; i++) {
@@ -32,16 +31,25 @@ const onLoad = () => {
           break;
         }
       }
+
+      if (section instanceof HTMLElement) {
+        section.appendChild(app);
+      } else if (section instanceof HTMLCollection) {
+        section[0].appendChild(app);
+      }
+
       break;
+
     case "walmart":
       section = document.getElementById("item-review-section");
       if (!section) return;
 
       const ratingsSection = section.childNodes[1];
 
-      section.insertBefore(elem, ratingsSection);
+      section.insertBefore(app, ratingsSection);
 
       break;
+
     case "target":
       section = document.getElementsByClassName(
         "styles__StyledHeading-sc-1xmf98v-0 jhKFiw h-text-center h-padding-a-default h-margin-b-none"
@@ -54,15 +62,14 @@ const onLoad = () => {
       }
 
       if (section instanceof HTMLElement) {
-        section.appendChild(elem);
+        section.appendChild(app);
       } else if (section instanceof HTMLCollection) {
-        section[0].appendChild(elem);
+        section[0].appendChild(app);
       }
       break;
   }
 
-  //section?.appendChild(elem);
-  const rootDiv = ReactDOM.createRoot(elem);
+  const rootDiv = ReactDOM.createRoot(app);
   rootDiv.render(<App />);
   window.removeEventListener("load", onLoad);
 };
