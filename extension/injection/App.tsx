@@ -1,18 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../src/App.css";
 import Modal from "./Modal";
 import amazonScrape from "../../backend/webscraping/amazon/amazonScrape";
+import HoverModal from "./HoverModal";
 
 interface Summary {
   reviews: string[];
   included: number[];
-  excluded: number[];
 }
 
 function App() {
   const [pros, setPros] = useState<Summary>();
   const [cons, setCons] = useState<Summary>();
+  const [rawData, setRawData] = useState<{
+    positive: string[];
+    negative: string[];
+  }>();
 
   useEffect(() => {
     const init = async () => {
@@ -66,6 +70,7 @@ function App() {
         console.error("reviews are empty: ", reviews, "url: ", window.location);
         return;
       }
+      setRawData(reviews);
 
       await Promise.all([
         getList(reviews.positive, "positive"),
@@ -77,7 +82,7 @@ function App() {
   }, []);
 
   return (
-    <Modal>
+    <Modal className="w-full">
       <div className="w-full h-fit p-1 bg-gradient-to-r from-[#000181] to-[#1084D0] ">
         <img
           width={240}
@@ -88,26 +93,83 @@ function App() {
       </div>
 
       <div className="grid items-start w-full grid-cols-2 justify-center p-3 gap-x-3">
-        <List yeet={pros} pos={true} />
-        <List yeet={cons} pos={false} />
+        <List summary={pros} raw={rawData?.positive} pos={true} />
+        {/* <List
+          summary={{ reviews: ["pos1", "pos2"], included: [0, 1] }}
+          raw={["pos1 raw", "pos2 raw"]}
+          pos={true}
+        /> */}
+        <List summary={cons} raw={rawData?.negative} pos={false} />
       </div>
     </Modal>
   );
 }
 
 interface ListProps {
-  yeet?: Summary;
+  summary?: Summary;
+  raw?: string[];
   pos: boolean;
 }
 
 const List = (props: ListProps) => {
+  const [hovered, setHovered] = useState(false);
+  const [hoverPos, setHoverPos] = useState({ x: 0, y: 0 });
+  const [hoverIndex, setHoverIndex] = useState(-1);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  const onHover = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    i: number
+  ) => {
+    setHoverIndex(i);
+    setHovered(true);
+
+    //pointOffsets is sometimes undefined if it's outside
+    const listOffsets = listRef.current?.getBoundingClientRect();
+    if (!listOffsets) {
+      console.error;
+      `pointOffsets is undefined. pointRef is: ${listRef.current}`;
+      return;
+    }
+    console.log("pointOffsets:", listOffsets);
+
+    const mouseOffsets = e.currentTarget.getBoundingClientRect();
+    console.log("mouseOffsets:", mouseOffsets);
+
+    const final = {
+      x: mouseOffsets.left,
+      y: mouseOffsets.height + 100,
+    };
+    console.log("final", final);
+
+    setHoverPos(final);
+  };
+
   return (
-    <div className="flex flex-col justify-center gap-y-2">
+    <div
+      className="relative flex flex-col justify-center gap-y-2"
+      ref={listRef}
+    >
+      <HoverModal
+        visible={hovered}
+        pos={hoverPos}
+        raw={props.raw && props.raw[hoverIndex]}
+        close={() => {
+          setHoverIndex(-1);
+          setHovered(false);
+        }}
+      />
       <h1 className="text-3xl text-black">{props.pos ? "Pros" : "Cons"}</h1>
       <ul className="flex flex-col gap-y-2  font-normal text-base">
-        {props.yeet
-          ? props.yeet.reviews.map((review, i) => (
-              <li className="text-start flex gap-x-2 items-start" key={i}>
+        {props.summary
+          ? props.summary.reviews.map((review, i) => (
+              <li
+                className="text-start flex gap-x-2 items-start"
+                key={i}
+                onClick={(e) => {
+                  onHover(e, i);
+                }}
+              >
                 {props.pos ? (
                   <Icon icon="fluent-emoji-flat:thumbs-up" height={20} />
                 ) : (
