@@ -1,11 +1,6 @@
 Given an array of reviews for a product, filter out all repetitive, low quality reviews. DO NOT filter out quality reviews describing product features and user experience. If there is no low-quality review, include all. The result should have no more than 10 reviews. Include an array of the index of the included reviews.
 
-Respond ONLY with a JSON object with the following format:
-{
-  //filtered reviews
-  reviews: ["review1", "review2", "review3"],
-  //index of included reviews
-  included: [0,3,5],
-}
+Respond ONLY with filtered reviews separated by newline characters. 
+
 
 Reviews: {{$reviews}}
