@@ -6,9 +6,24 @@ import amazonScrape from "../../backend/webscraping/amazon/amazonScrape";
 import HoverModal from "./HoverModal";
 
 interface Summary {
-  reviews: string[];
-  included: number[];
+  all: {
+    summary: string;
+    index: number;
+  }[];
+  filtered: string[];
 }
+
+const findReviewIndex = (
+  summaries: { summary: string; index: number }[],
+  target: string
+) => {
+  for (let i = 0; i < summaries.length; i++) {
+    if (summaries[i].summary === target) {
+      return summaries[i].index;
+    }
+  }
+  return -1;
+};
 
 function App() {
   const [pros, setPros] = useState<Summary>();
@@ -82,7 +97,7 @@ function App() {
   }, []);
 
   return (
-    <Modal className="w-full">
+    <Modal className="w-full relative">
       <div className="w-full h-fit p-1 bg-gradient-to-r from-[#000181] to-[#1084D0] ">
         <img
           width={240}
@@ -146,10 +161,8 @@ const List = (props: ListProps) => {
   };
 
   return (
-    <div
-      className="relative flex flex-col justify-center gap-y-2"
-      ref={listRef}
-    >
+    <div className="flex flex-col justify-center gap-y-2" ref={listRef}>
+      {/**the name is hover modal, but right now it's click to open */}
       <HoverModal
         visible={hovered}
         pos={hoverPos}
@@ -162,12 +175,15 @@ const List = (props: ListProps) => {
       <h1 className="text-3xl text-black">{props.pos ? "Pros" : "Cons"}</h1>
       <ul className="flex flex-col gap-y-2  font-normal text-base">
         {props.summary
-          ? props.summary.reviews.map((review, i) => (
+          ? props.summary.filtered.map((review, i) => (
               <li
                 className="text-start flex gap-x-2 items-start"
                 key={i}
                 onClick={(e) => {
-                  onHover(e, i);
+                  const index = findReviewIndex(props.summary!.all, review);
+                  console.log("index:", index);
+
+                  onHover(e, index);
                 }}
               >
                 {props.pos ? (

@@ -30,8 +30,8 @@ async def generateList(reviews: List[str], type: str):
     summarizeResults: List[sk.SKContext[Any]] = await asyncio.gather(*unresolvedResults)
 
     # sanitize items and flatten array
-    summaryArray = [summary for Summaries in summarizeResults for summary in re.split('[;\n]', Summaries.dict(
-    )["variables"]["variables"]["input"].replace("- ", ""))]
+    summaryArray = [{"summary": summary, "index": index} for index, Summaries in enumerate(summarizeResults) for summary in Summaries.dict(
+    )["variables"]["variables"]["input"].replace("- ", "").split("\n")]
 
     print("result:", summaryArray)
 
@@ -43,6 +43,7 @@ async def generateList(reviews: List[str], type: str):
 
     print("genListResult:", genListNewResult.dict()
           ["variables"]["variables"]["input"])
+    filteredSummaries = genListNewResult.dict(
+    )["variables"]["variables"]["input"].split("\n")
 
-    # return just the filtered summary list
-    return genListNewResult.dict()["variables"]["variables"]["input"]
+    return {"all": summaryArray, "filtered": filteredSummaries}

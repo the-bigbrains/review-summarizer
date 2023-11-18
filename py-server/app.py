@@ -45,7 +45,7 @@ async def list():
     data: List[str] = request.get_json()['data']['reviews']
     reviewType = request.get_json()['data']['type']
 
-    # these are for 
+    # these are for
     # data = scrapeData
     # reviewType = "positive"
 
@@ -53,8 +53,9 @@ async def list():
         return {"data": []}
 
     res = await generateList(data, reviewType)
+    print("list response:", res)
 
-    return {"data": ast.literal_eval(res)}
+    return {"data": res}
 
 
 @app.route("/test", methods=['GET'])
