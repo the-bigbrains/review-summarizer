@@ -13,7 +13,7 @@ const HoverModal = (props: Props) => {
       className={`${props.visible ? "block" : "hidden"} absolute z-10`}
       style={{ left: props.pos.x, top: props.pos.y }}
     >
-      <button onClick={close}>close</button>
+      <button onClick={props.close}>close</button>
       {props.raw ? props.raw : "No data"}
     </Modal>
   );
