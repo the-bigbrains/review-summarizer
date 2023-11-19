@@ -4,6 +4,7 @@ import Modal from "./comp/Modal";
 import amazonScrape from "../../backend/webscraping/amazon/amazonScrape";
 import { Summary } from "./util";
 import List from "./comp/List";
+import TitleBar from "./comp/TitleBar";
 
 function App() {
   const [pros, setPros] = useState<Summary>();
@@ -77,15 +78,15 @@ function App() {
   }, []);
 
   return (
-    <Modal className="w-full relative">
-      <div className="w-full h-fit p-1 bg-gradient-to-r from-[#000181] to-[#1084D0] ">
+    <Modal className="w-full relative p-3 pt-1">
+      <TitleBar>
         <img
           width={240}
-          height={100}
+          height={28}
           src="https://i.imgur.com/vRl4O17.png"
           alt=""
         />
-      </div>
+      </TitleBar>
 
       <div className="grid items-start w-full grid-cols-2 p-3 gap-x-3">
         <List summary={pros} raw={rawData?.positive} pos={true} />

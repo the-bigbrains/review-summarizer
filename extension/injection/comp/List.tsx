@@ -70,7 +70,7 @@ const List = (props: Props) => {
         {props.summary
           ? props.summary.filtered.map((review, i) => (
               <li
-                className="text-start flex gap-x-2 items-start justify-center"
+                className="text-start flex gap-x-2 items-start"
                 key={i}
                 onClick={(e) => {
                   const index = findReviewIndex(props.summary!.all, review);
