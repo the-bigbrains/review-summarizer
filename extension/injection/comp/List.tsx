@@ -9,6 +9,9 @@ interface Props {
   pos: boolean;
 }
 
+//punctuations and spaces
+const regex = /[.,\/#!$%\^&\*;:{}=\-_~()\s]/g;
+
 const List = (props: Props) => {
   const [hovered, setHovered] = useState(false);
   const [hoverPos, setHoverPos] = useState({ x: 0, y: 0 });
@@ -20,7 +23,12 @@ const List = (props: Props) => {
     target: string
   ) => {
     for (let i = 0; i < summaries.length; i++) {
-      if (summaries[i].summary.includes(target)) {
+      const original = summaries[i].summary.replaceAll(regex, "").toLowerCase();
+      const targetSantiized = target.replaceAll(regex, "").toLowerCase();
+      if (
+        original.includes(targetSantiized) ||
+        targetSantiized.includes(original)
+      ) {
         return summaries[i].index;
       }
     }
