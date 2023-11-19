@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import { Icon } from "@iconify/react";
+import { useEffect, useRef, useState } from "react";
 import "../src/App.css";
-import Modal from "./Modal";
+import Modal from "./comp/Modal";
 import amazonScrape from "../../backend/webscraping/amazon/amazonScrape";
-
-interface Summary {
-  reviews: string[];
-  included: number[];
-  excluded: number[];
-}
+import { Summary } from "./util";
+import List from "./comp/List";
+import TitleBar from "./comp/TitleBar";
 
 function App() {
   const [pros, setPros] = useState<Summary>();
   const [cons, setCons] = useState<Summary>();
+  const [rawData, setRawData] = useState<{
+    positive: string[];
+    negative: string[];
+  }>();
 
   useEffect(() => {
     const init = async () => {
@@ -66,6 +66,7 @@ function App() {
         console.error("reviews are empty: ", reviews, "url: ", window.location);
         return;
       }
+      setRawData(reviews);
 
       await Promise.all([
         getList(reviews.positive, "positive"),
@@ -77,56 +78,27 @@ function App() {
   }, []);
 
   return (
-    <Modal>
-      <div className="w-full h-fit p-1 bg-gradient-to-r from-[#000181] to-[#1084D0] ">
+    <Modal className="w-full relative p-3 pt-1">
+      <TitleBar>
         <img
           width={240}
-          height={100}
-          src="https://i.imgur.com/vRl4O17.png"
+          height={28}
+          src={chrome.runtime.getURL("./assets/logo.png")}
           alt=""
         />
-      </div>
+      </TitleBar>
 
-      <div className="grid items-start w-full grid-cols-2 justify-center p-3 gap-x-3">
-        <List yeet={pros} pos={true} />
-        <List yeet={cons} pos={false} />
+      <div className="grid items-start w-full grid-cols-2 p-3 gap-x-3">
+        <List summary={pros} raw={rawData?.positive} pos={true} />
+        {/* <List
+          summary={{ reviews: ["pos1", "pos2"], included: [0, 1] }}
+          raw={["pos1 raw", "pos2 raw"]}
+          pos={true}
+        /> */}
+        <List summary={cons} raw={rawData?.negative} pos={false} />
       </div>
     </Modal>
   );
 }
-
-interface ListProps {
-  yeet?: Summary;
-  pos: boolean;
-}
-
-const List = (props: ListProps) => {
-  return (
-    <div className="flex flex-col justify-center gap-y-2">
-      <h1 className="text-3xl text-black">{props.pos ? "Pros" : "Cons"}</h1>
-      <ul className="flex flex-col gap-y-2  font-normal text-base">
-        {props.yeet
-          ? props.yeet.reviews.map((review, i) => (
-              <li className="text-start flex gap-x-2 items-start" key={i}>
-                {props.pos ? (
-                  <Icon icon="fluent-emoji-flat:thumbs-up" height={20} />
-                ) : (
-                  <Icon icon="fluent-emoji-flat:thumbs-down" height={20} />
-                )}
-                {review}
-              </li>
-            ))
-          : Array(5)
-              .fill(0)
-              .map((_, i) => (
-                <div
-                  className="w-full h-6 animate-pulse bg-zinc-400"
-                  key={i}
-                ></div>
-              ))}
-      </ul>
-    </div>
-  );
-};
 
 export default App;

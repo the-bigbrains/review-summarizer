@@ -1,21 +1,17 @@
-import puppeteer from "puppeteer";
+import { z } from "zod";
+import { usePuppeteer } from "../customHooks/usePuppeteer";
+import reviewCharMin from "../util";
 
 export default async function scrapeReviews(url: string) {
-  const browser = await puppeteer.launch({ headless: "new" });
-  const page = await browser.newPage();
+  const { browser, page } = await usePuppeteer(url);
   console.log("browser launched");
 
-  //attempt to emulate human user
-  await page.setUserAgent(
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
-  );
-
-  await page.goto(url);
-
   const allReviewsSelector = 'a[data-hook="see-all-reviews-link-foot"]';
-  const allReviews = await page.waitForSelector(allReviewsSelector); //wait for the see all reviews button to load
+
+  //wait for the see all reviews button to load
+  const allReviews = await page.waitForSelector(allReviewsSelector);
   if (!allReviews) {
-    console.log("anchorElHandle not found");
+    console.log("selector for all reviews not found");
     return;
   }
   await allReviews.click();
@@ -23,34 +19,30 @@ export default async function scrapeReviews(url: string) {
   console.log("clicked see all reviews");
 
   // This function will be called on each page, it selects all reviews and returns them in an array
-  async function getReviewComments() {
-    await page.waitForSelector(
-      'div[class="a-section a-spacing-none review-views celwidget"]'
-    ); // Wait for the reviews to load
-    const reviewComments = await page.$$eval(
-      'span[data-hook="review-body"]',
-      (commentElements) => {
-        return commentElements.map((element) =>
-          element.textContent?.trim().replace(/\n/g, "")
-        );
-      }
-    );
-    return reviewComments;
-  }
-
-  async function reviewComments() {
-    const allReviews: string[] = [];
-
+  async function getReviews() {
+    let reviewArray: string[] = [];
     try {
-      const currentReviews = await getReviewComments();
+      // Wait for the reviews to load
+      await page.waitForSelector(
+        'div[class="a-section a-spacing-none review-views celwidget"]'
+      );
+
+      const currentReviews = await page.$$eval(
+        'span[data-hook="review-body"]',
+        (commentElements) => {
+          return commentElements.map((element) =>
+            element.textContent?.trim().replace(/\n/g, "")
+          );
+        }
+      );
       console.log("Current Reviews:", currentReviews);
 
-      if (currentReviews.length === 0) {
-        console.log("No reviews found on page");
-        return allReviews;
-      }
+      //validate array to only be string[]
+      reviewArray = z.array(z.string()).parse(currentReviews);
 
-      allReviews.push(...(currentReviews as string[]));
+      reviewArray = reviewArray.filter(
+        (review) => review.length > reviewCharMin
+      );
 
       /*const nextPageButton = ".a-last > a"; // Selector for the next page button
       await page.waitForSelector(nextPageButton);
@@ -66,11 +58,10 @@ export default async function scrapeReviews(url: string) {
     } catch (error) {
       console.error("Error:", error);
     }
-
-    return allReviews;
+    return reviewArray;
   }
 
-  const reviewSelectorArray = ["rg", "lf"];
+  const reviewSelectorArray = ["lf", "rg"];
   const reviewArrayResolved: string[][] = [];
 
   for (const selector of reviewSelectorArray) {
@@ -87,12 +78,14 @@ export default async function scrapeReviews(url: string) {
       await page.waitForNavigation();
       console.log("clicked reviews");
 
-      const comments = await reviewComments();
+      const comments = await getReviews();
       reviewArrayResolved.push(comments); // Fix: Push the comments array into reviewArrayResolved
     } catch (error) {
       console.log("error:", error);
     }
   }
+
+  browser.close();
 
   console.log("All reviews:", reviewArrayResolved);
 

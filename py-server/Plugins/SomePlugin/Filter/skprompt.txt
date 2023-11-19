@@ -1,0 +1,5 @@
+Given an array of reviews for a product, filter out all repetitive, low quality reviews. DO NOT filter out quality reviews describing product features and user experience. The result should have no more than 10 reviews. Do not include useless summaries, such as "This product is good", "I recommend them", "It is bad", etc. Keep ONLY {{$type}} reviews.
+
+Respond ONLY with filtered reviews separated by newline characters. 
+
+Reviews: {{$reviews}}

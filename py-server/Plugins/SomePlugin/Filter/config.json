@@ -11,6 +11,11 @@
   "input": {
     "parameters": [
       {
+        "name": "type",
+        "description": "The type of reviews",
+        "defaultValue": ""
+      },
+      {
         "name": "reviews",
         "description": "The reviews to summarize.",
         "defaultValue": ""

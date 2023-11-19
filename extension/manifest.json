@@ -1,28 +1,31 @@
 {
-    "version": "4.2.0",
-    "manifest_version": 3,
-    "name": "ReviewRune",
-    "description": "A review analyst for amazon.com.",
-    "content_scripts": [
-        {
-            "matches": [
-                "https://*.amazon.com/*",
-                "https://*.walmart.com/ip/*",
-                "https://*.target.com/p/*",
-                "https://*.yelp.com/*",
-                "https://*.tripadvisor.com/*",
-                "https://*.airbnb.com/*"
-            ],
-            "js": [
-                "./js/inject.js"
-            ],
-            "css": [
-                "./js/App.css"
-            ]
-        }
-    ],
-    "action": {
-        "default_popup": "js/index.html",
-        "default_title": "ReviewRune"
+  "version": "4.2.0",
+  "manifest_version": 3,
+  "name": "Review Summarizer 9000",
+  "description": "A review analyst for major e-commerce sites",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.amazon.com/*",
+        "https://*.walmart.com/ip/*",
+        "https://*.target.com/p/*",
+        "https://*.yelp.com/*",
+        "https://*.tripadvisor.com/*",
+        "https://*.airbnb.com/*"
+      ],
+      "js": ["./js/inject.js"],
+      "css": ["./js/App.css"]
     }
+  ],
+  "action": {
+    "default_popup": "js/index.html",
+    "default_title": "ReviewRune"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/logo.png"],
+      "extension_ids": ["*"],
+      "matches": ["*://*/*"]
+    }
+  ]
 }
