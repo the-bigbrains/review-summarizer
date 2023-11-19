@@ -6,6 +6,7 @@ export async function usePuppeteer(url: string) {
   const page = await browser.newPage();
 
   //attempt to emulate human user
+  await page.setViewport({ width: 1366, height: 768 });
   await page.setUserAgent(
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   );

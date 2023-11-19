@@ -17,7 +17,8 @@ const HoverModal = (props: Props) => {
       } absolute z-10 max-w-xs p-3 pt-1 `}
       style={{ left: props.pos.x, top: props.pos.y }}
     >
-      <TitleBar className="items-end">
+      <TitleBar className="flex text-white justify-between">
+        Reference review
         <Modal onClick={props.close} className="w-fit p-1">
           {/** Close **/}
           <Icon

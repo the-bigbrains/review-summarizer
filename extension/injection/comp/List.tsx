@@ -88,9 +88,9 @@ const List = (props: Props) => {
                 }}
               >
                 {props.pos ? (
-                  <Icon icon="fluent-emoji-flat:thumbs-up" height={20} />
+                  <Icon icon="openmoji:thumbs-up" height={20} />
                 ) : (
-                  <Icon icon="fluent-emoji-flat:thumbs-down" height={20} />
+                  <Icon icon="openmoji:thumbs-down" height={20} />
                 )}
                 {review}
               </li>
