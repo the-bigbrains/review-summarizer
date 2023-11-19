@@ -12,7 +12,7 @@
     "parameters": [
       {
         "name": "type",
-        "description": "The type of aspect to summarize.",
+        "description": "The type reviews",
         "defaultValue": ""
       },
       {
