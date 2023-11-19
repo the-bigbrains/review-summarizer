@@ -83,7 +83,7 @@ function App() {
         <img
           width={240}
           height={28}
-          src="https://i.imgur.com/vRl4O17.png"
+          src={chrome.runtime.getURL("./assets/logo.png")}
           alt=""
         />
       </TitleBar>
