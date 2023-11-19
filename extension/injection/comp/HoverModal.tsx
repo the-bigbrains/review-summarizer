@@ -28,7 +28,9 @@ const HoverModal = (props: Props) => {
           />
         </Modal>
       </TitleBar>
-      {props.raw ? props.raw : "No data"}
+      <p className="font-normal text-base">
+        {props.raw ? props.raw : "No data"}
+      </p>
     </Modal>
   );
 };
