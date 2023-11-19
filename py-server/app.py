@@ -33,10 +33,11 @@ def scrape():
 
 @app.route("/list", methods=['POST', 'GET'])
 async def list():
-    print("list endpoint hit")
 
     data: List[str] = request.get_json()['data']['reviews']
     reviewType = request.get_json()['data']['type']
+
+    print("list endpoint hit. type:", reviewType)
 
     if (not data):
         return {"data": []}

@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "dev": "webpack -w --config webpack.config.js"
+    "dev": "webpack --config webpack.config.js"
   },
   "devDependencies": {
     "web-vitals": "^3.5.0",

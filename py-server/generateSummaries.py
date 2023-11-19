@@ -6,13 +6,13 @@ import asyncio
 
 
 async def generateSummaries(reviews: List[str], type: str):
-    print("gen summary start")
+    print(f"gen {type} summary start")
 
     pluginDir = os.path.join(__file__, "../Plugins")
     plugin = kernel.import_semantic_skill_from_directory(
         pluginDir, "SomePlugin")
 
-    print("reviews:", reviews)
+    print(f"{type} reviews:", reviews)
 
     unresolvedResults: List[Coroutine[Any, Any, sk.SKContext[Any]]] = []
     # generate promises for each review
@@ -23,7 +23,7 @@ async def generateSummaries(reviews: List[str], type: str):
         unresolvedResults.append(kernel.run_async(
             plugin["Summarize"], input_vars=context))
 
-    print("resolving...")
+    print(f"resolving {type}...")
     # resolve promises in parallel
     summarizeResults: List[sk.SKContext[Any]] = await asyncio.gather(*unresolvedResults)
 
@@ -31,7 +31,7 @@ async def generateSummaries(reviews: List[str], type: str):
     summaryArray = [{"summary": summary, "index": index} for index, Summaries in enumerate(summarizeResults) for summary in Summaries.dict(
     )["variables"]["variables"]["input"].replace("- ", "").split("\n")]
 
-    print("summary result:", summaryArray)
+    print(f"{type} summary result:", summaryArray)
 
     filterContext = sk.ContextVariables()
     filterContext["reviews"] = str(summaryArray)
@@ -39,7 +39,7 @@ async def generateSummaries(reviews: List[str], type: str):
     # generate a filtered list of summary
     filterResult = await kernel.run_async(plugin["Filter"], input_vars=filterContext)
 
-    print("filter result:", filterResult.dict()
+    print(f"{type} filter result:", filterResult.dict()
           ["variables"]["variables"]["input"])
     filteredSummaries = filterResult.dict(
     )["variables"]["variables"]["input"].split("\n")
