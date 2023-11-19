@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { usePuppeteer } from "../customHooks/usePuppeteer";
-
-const reviewCharMin = 70;
+import reviewCharMin from "../util";
 
 export default async function scrapeReviews(url: string) {
   const { browser, page } = await usePuppeteer(url);
