@@ -35,7 +35,7 @@ async def generateSummaries(reviews: List[str], type: str):
 
     filterContext = sk.ContextVariables()
     filterContext["reviews"] = str(summaryArray)
-
+    filterContext["type"] = type
     # generate a filtered list of summary
     filterResult = await kernel.run_async(plugin["Filter"], input_vars=filterContext)
 
