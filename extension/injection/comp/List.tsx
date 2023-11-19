@@ -20,7 +20,7 @@ const List = (props: Props) => {
     target: string
   ) => {
     for (let i = 0; i < summaries.length; i++) {
-      if (summaries[i].summary === target) {
+      if (summaries[i].summary.includes(target)) {
         return summaries[i].index;
       }
     }
