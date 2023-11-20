@@ -6,7 +6,7 @@ import { Summary } from "../util";
 interface Props {
   summary?: Summary;
   raw?: string[];
-  pos: boolean;
+  isPositive: boolean;
 }
 
 //punctuations and spaces
@@ -37,7 +37,8 @@ const List = (props: Props) => {
 
   const onHover = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    i: number
+    i: number,
+    type: "positive" | "negative"
   ) => {
     setHoverIndex(i);
     setHovered(true);
@@ -53,8 +54,8 @@ const List = (props: Props) => {
     const mouseOffsets = e.currentTarget.getBoundingClientRect();
 
     const hoverPos = {
-      x: mouseOffsets.left,
-      y: mouseOffsets.height + 100,
+      x: type === "positive" ? listOffsets.right : listOffsets.left - 500,
+      y: mouseOffsets.height + 140,
     };
 
     setHoverPos(hoverPos);
@@ -72,26 +73,31 @@ const List = (props: Props) => {
           setHovered(false);
         }}
       />
-      <h1 className="text-3xl text-black">{props.pos ? "Pros" : "Cons"}</h1>
+
+      <h1 className="text-3xl text-black">
+        {props.isPositive ? "Pros" : "Cons"}
+      </h1>
 
       <ul className="flex flex-col gap-y-2  font-normal text-base">
         {props.summary
           ? props.summary.filtered.map((review, i) => (
               <li
-                className="text-start flex gap-x-2 items-start"
+                className="text-start flex gap-x-2 items-start cursor-pointer border-[#C0C0C0] border-4 hover:border-l-zinc-300 hover:border-t-zinc-300 hover:border-black"
                 key={i}
                 onClick={(e) => {
                   const index = findReviewIndex(props.summary!.all, review);
                   console.log("index:", index);
-
-                  onHover(e, index);
+                  onHover(e, index, props.isPositive ? "positive" : "negative");
                 }}
               >
-                {props.pos ? (
-                  <Icon icon="openmoji:thumbs-up" height={20} />
-                ) : (
-                  <Icon icon="openmoji:thumbs-down" height={20} />
-                )}
+                <Icon
+                  icon={
+                    props.isPositive
+                      ? "openmoji:thumbs-up"
+                      : "openmoji:thumbs-down"
+                  }
+                  height={20}
+                />
                 {review}
               </li>
             ))
