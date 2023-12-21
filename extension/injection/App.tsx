@@ -14,6 +14,7 @@ function App() {
     negative: string[];
   }>();
 
+
   useEffect(() => {
     const init = async () => {
       const getScrapeData = async (url: string) => {
