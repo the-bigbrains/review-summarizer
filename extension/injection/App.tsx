@@ -89,13 +89,8 @@ function App() {
       </TitleBar>
 
       <div className="grid items-start w-full grid-cols-2 p-3 gap-x-3">
-        <List summary={pros} raw={rawData?.positive} pos={true} />
-        {/* <List
-          summary={{ reviews: ["pos1", "pos2"], included: [0, 1] }}
-          raw={["pos1 raw", "pos2 raw"]}
-          pos={true}
-        /> */}
-        <List summary={cons} raw={rawData?.negative} pos={false} />
+        <List summary={pros} raw={rawData?.positive} isPositive={true} />
+        <List summary={cons} raw={rawData?.negative} isPositive={false} />
       </div>
     </Modal>
   );
