@@ -1,3 +1,5 @@
+Check out the Devpost: https://devpost.com/software/review-generator-9000
+
 ## Problem
 
 We all read a handful of them to make educated shopping decisions, but it is a process that takes long enough to be annoying. What if we could get a summary of them right on the page?
